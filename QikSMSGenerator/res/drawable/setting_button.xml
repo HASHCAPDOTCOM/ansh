@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
  * Copyright (C) 2008-2008 Hashcap Pvt. Ltd.
@@ -16,23 +17,10 @@
  * limitations under the License.
  */
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/menu_start"
-        android:orderInCategory="1"
-        android:showAsAction="always"
-        android:title="@string/start"/>
-    <item
-        android:id="@+id/menu_stop"
-        android:orderInCategory="2"
-        android:showAsAction="always"
-        android:title="@string/stop"
-        android:visible="false"/>
-    <item
-        android:id="@+id/menu_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/settings"/>
+    <item android:drawable="@drawable/action_settings_pressed" android:state_pressed="true"/>
+    <item android:drawable="@drawable/action_settings_pressed" android:state_selected="true"/>
+    <item android:drawable="@drawable/action_settings" android:state_pressed="false" android:state_selected="false"/>
 
-</menu>
+</selector>
