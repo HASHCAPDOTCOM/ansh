@@ -82,74 +82,88 @@
                         android:layout_height="wrap_content"
                         android:checked="true"
                         android:ellipsize="end"
-                        android:padding="4dip"
                         android:singleLine="true"
                         android:text="@string/generate_conversation" />
                 </LinearLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="4dip"
-                    android:paddingRight="4dip"
-                    android:weightSum="3" >
-
-                    <TextView
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingLeft="4dip"
-                        android:paddingRight="4dip"
-                        android:text="@string/conversations" />
-
-                    <TextView
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingLeft="4dip"
-                        android:paddingRight="4dip"
-                        android:text="@string/messages" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="4dip"
-                    android:paddingRight="4dip"
-                    android:weightSum="3" >
-
-                    <EditText
-                        android:id="@+id/editText_conversation"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:hint="@string/number"
-                        android:inputType="number"
-                        android:text="1" />
-
-                    <EditText
-                        android:id="@+id/editText_conversation_message"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:hint="@string/number"
-                        android:inputType="number"
-                        android:text="1" />
+                    android:layout_height="wrap_content" >
 
                     <ImageView
                         android:id="@+id/imageView_setting_conversation"
-                        android:layout_width="0dip"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:clickable="true"
+                        android:padding="4dip"
                         android:src="@drawable/setting_button" />
-                </LinearLayout>
-            </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_toLeftOf="@id/imageView_setting_conversation"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingLeft="4dip"
+                            android:paddingRight="4dip"
+                            android:weightSum="2" >
+
+                            <TextView
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingLeft="4dip"
+                                android:paddingRight="4dip"
+                                android:text="@string/conversations" />
+
+                            <EditText
+                                android:id="@+id/editText_conversation"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="@string/number"
+                                android:inputType="number"
+                                android:text="1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingLeft="4dip"
+                            android:paddingRight="4dip"
+                            android:weightSum="2" >
+
+                            <TextView
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingLeft="4dip"
+                                android:paddingRight="4dip"
+                                android:text="@string/messages" />
+
+                            <EditText
+                                android:id="@+id/editText_conversation_message"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="@string/number"
+                                android:inputType="number"
+                                android:text="1" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
             <!-- Message Box Container -->
 
             <LinearLayout
@@ -172,192 +186,249 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:padding="4dip"
                         android:singleLine="true"
                         android:text="@string/generate_message_for_box" />
                 </LinearLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="4dip"
-                    android:paddingRight="4dip"
-                    android:weightSum="3" >
-
-                    <CheckBox
-                        android:id="@+id/checkBox_inbox"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="true"
-                        android:ellipsize="marquee"
-                        android:singleLine="true"
-                        android:text="@string/inbox" />
-
-                    <EditText
-                        android:id="@+id/editText_inbox"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:hint="@string/number"
-                        android:inputType="number"
-                        android:text="1" />
+                    android:minHeight="48dip" >
 
                     <ImageView
                         android:id="@+id/imageView_setting_inbox"
-                        android:layout_width="0dip"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:clickable="true"
+                        android:padding="4dip"
                         android:src="@drawable/setting_button" />
-                </LinearLayout>
 
-                <LinearLayout
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/imageView_setting_inbox"
+                        android:orientation="horizontal"
+                        android:paddingLeft="4dip"
+                        android:paddingRight="4dip"
+                        android:weightSum="2" >
+
+                        <CheckBox
+                            android:id="@+id/checkBox_inbox"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:ellipsize="marquee"
+                            android:singleLine="true"
+                            android:text="@string/inbox" />
+
+                        <EditText
+                            android:id="@+id/editText_inbox"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="@string/number"
+                            android:inputType="number"
+                            android:text="1" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="4dip"
-                    android:paddingRight="4dip"
-                    android:weightSum="3" >
-
-                    <CheckBox
-                        android:id="@+id/checkBox_sent"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="true"
-                        android:ellipsize="marquee"
-                        android:singleLine="true"
-                        android:text="@string/sent" />
-
-                    <EditText
-                        android:id="@+id/editText_sent"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:hint="@string/number"
-                        android:inputType="number"
-                        android:text="1" />
+                    android:minHeight="48dip" >
 
                     <ImageView
                         android:id="@+id/imageView_setting_sent"
-                        android:layout_width="0dip"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:clickable="true"
+                        android:padding="4dip"
                         android:src="@drawable/setting_button" />
-                </LinearLayout>
 
-                <LinearLayout
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/imageView_setting_sent"
+                        android:orientation="horizontal"
+                        android:paddingLeft="4dip"
+                        android:paddingRight="4dip"
+                        android:weightSum="2" >
+
+                        <CheckBox
+                            android:id="@+id/checkBox_sent"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:ellipsize="marquee"
+                            android:singleLine="true"
+                            android:text="@string/sent" />
+
+                        <EditText
+                            android:id="@+id/editText_sent"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="@string/number"
+                            android:inputType="number"
+                            android:text="1" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="4dip"
-                    android:paddingRight="4dip"
-                    android:weightSum="3" >
-
-                    <CheckBox
-                        android:id="@+id/checkBox_draft"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ellipsize="marquee"
-                        android:singleLine="true"
-                        android:text="@string/draft" />
-
-                    <EditText
-                        android:id="@+id/editText_draft"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:hint="@string/number"
-                        android:inputType="number"
-                        android:text="1" />
+                    android:minHeight="48dip" >
 
                     <ImageView
                         android:id="@+id/imageView_setting_draft"
-                        android:layout_width="0dip"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:clickable="true"
+                        android:padding="4dip"
                         android:src="@drawable/setting_button" />
-                </LinearLayout>
 
-                <LinearLayout
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/imageView_setting_draft"
+                        android:orientation="horizontal"
+                        android:paddingLeft="4dip"
+                        android:paddingRight="4dip"
+                        android:weightSum="2" >
+
+                        <CheckBox
+                            android:id="@+id/checkBox_draft"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:ellipsize="marquee"
+                            android:singleLine="true"
+                            android:text="@string/draft" />
+
+                        <EditText
+                            android:id="@+id/editText_draft"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="@string/number"
+                            android:inputType="number"
+                            android:text="1" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="4dip"
-                    android:paddingRight="4dip"
-                    android:weightSum="3" >
-
-                    <CheckBox
-                        android:id="@+id/checkBox_outbox"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ellipsize="marquee"
-                        android:singleLine="true"
-                        android:text="@string/outbox" />
-
-                    <EditText
-                        android:id="@+id/editText_outbox"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:hint="@string/number"
-                        android:inputType="number"
-                        android:text="1" />
+                    android:minHeight="48dip" >
 
                     <ImageView
                         android:id="@+id/imageView_setting_outbox"
-                        android:layout_width="0dip"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:clickable="true"
+                        android:padding="4dip"
                         android:src="@drawable/setting_button" />
-                </LinearLayout>
 
-                <LinearLayout
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/imageView_setting_outbox"
+                        android:orientation="horizontal"
+                        android:paddingLeft="4dip"
+                        android:paddingRight="4dip"
+                        android:weightSum="2" >
+
+                        <CheckBox
+                            android:id="@+id/checkBox_outbox"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:ellipsize="marquee"
+                            android:singleLine="true"
+                            android:text="@string/sent" />
+
+                        <EditText
+                            android:id="@+id/editText_outbox"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="@string/number"
+                            android:inputType="number"
+                            android:text="1" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="4dip"
-                    android:paddingRight="4dip"
-                    android:weightSum="3" >
-
-                    <CheckBox
-                        android:id="@+id/checkBox_failed"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ellipsize="marquee"
-                        android:singleLine="true"
-                        android:text="@string/failed" />
-
-                    <EditText
-                        android:id="@+id/editText_failed"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:hint="@string/number"
-                        android:inputType="number"
-                        android:text="1" />
+                    android:minHeight="48dip" >
 
                     <ImageView
                         android:id="@+id/imageView_setting_failed"
-                        android:layout_width="0dip"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:clickable="true"
+                        android:padding="4dip"
                         android:src="@drawable/setting_button" />
-                </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/imageView_setting_failed"
+                        android:orientation="horizontal"
+                        android:paddingLeft="4dip"
+                        android:paddingRight="4dip"
+                        android:weightSum="2" >
+
+                        <CheckBox
+                            android:id="@+id/checkBox_failed"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:ellipsize="marquee"
+                            android:singleLine="true"
+                            android:text="@string/failed" />
+
+                        <EditText
+                            android:id="@+id/editText_failed"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="@string/number"
+                            android:inputType="number"
+                            android:text="1" />
+                    </LinearLayout>
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
