@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dip"
+            android:background="@drawable/title_background"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:ellipsize="end"
+                android:padding="4dip"
+                android:singleLine="true"
+                android:text="@string/recipients" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/checkBox_single_recipient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:ellipsize="marquee"
+            android:gravity="center_vertical"
+            android:minHeight="48dip"
+            android:singleLine="true"
+            android:text="@string/single_recipient" />
+
+        <CheckBox
+            android:id="@+id/checkBox_multiple_recipients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:gravity="center_vertical"
+            android:minHeight="48dip"
+            android:singleLine="true"
+            android:text="@string/multiple_recipients" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dip"
+            android:background="@drawable/title_background"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:ellipsize="end"
+                android:padding="4dip"
+                android:singleLine="true"
+                android:text="@string/message_data" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="4dip"
+            android:weightSum="2" >
+
+            <CheckBox
+                android:id="@+id/checkBox_message_parts"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="@string/message_parts" />
+
+            <EditText
+                android:id="@+id/editText_message_parts"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/number"
+                android:inputType="number"
+                android:text="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="4dip"
+            android:weightSum="2" >
+
+            <CheckBox
+                android:id="@+id/checkBox_text"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="@string/message_text" />
+
+            <Spinner
+                android:id="@+id/editText_message_text"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:entries="@array/message_text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="4dip"
+            android:weightSum="2" >
+
+            <CheckBox
+                android:id="@+id/checkBox_message_smiley"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="@string/message_smiley" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="4dip"
+            android:weightSum="2" >
+
+            <CheckBox
+                android:id="@+id/checkBox_message_phone_number"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="@string/message_phone_number" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="4dip"
+            android:weightSum="2" >
+
+            <CheckBox
+                android:id="@+id/checkBox_message_email_address"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="@string/message_email_address" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="4dip"
+            android:weightSum="2" >
+
+            <CheckBox
+                android:id="@+id/checkBox_message_web_address"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="@string/message_web_address" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

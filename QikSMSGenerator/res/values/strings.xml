@@ -34,5 +34,15 @@
     <string name="failed">Failed</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
+    <string name="recipients">Recipients</string>
+    <string name="single_recipient">Single recipient</string>
+    <string name="multiple_recipients">Multile recipients</string>
+    <string name="message_data">Message data settings</string>
+    <string name="message_parts">Message parts</string>
+    <string name="message_text">Text</string>
+    <string name="message_phone_number">Phone number</string>
+    <string name="message_email_address">Email address</string>
+    <string name="message_web_address">Web Address</string>
+    <string name="message_smiley">Smiley</string>
 
 </resources>
