@@ -76,8 +76,8 @@
                     android:background="@drawable/title_background"
                     android:orientation="vertical" >
 
-                    <CheckBox
-                        android:id="@+id/checkBox_conversation_title"
+                    <RadioButton
+                        android:id="@+id/radioButton_conversation_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
@@ -181,8 +181,8 @@
                     android:background="@drawable/title_background"
                     android:orientation="vertical" >
 
-                    <CheckBox
-                        android:id="@+id/checkBox_message_box_title"
+                    <RadioButton
+                        android:id="@+id/radioButton_message_box_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"

@@ -17,17 +17,38 @@
 
 package com.hashcap.qiksmsgenerator;
 
-import android.app.Activity;
-import android.os.Bundle;
+import java.util.HashSet;
 
-public class DataSettingsActivity extends Activity {
+import android.content.Context;
+import android.os.Handler;
 
-	/** Called when the activity is first created. */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-	    super.onCreate(savedInstanceState);
-	
-	    setContentView(R.layout.data_settings_activity);
+public class MessageBoxList {
+	private HashSet<MessageBox> mMessageBoxs = new HashSet<MessageBox>();
+
+	private boolean mEnabled;
+	private Context mContext;
+	private Handler mHandler;
+
+	public MessageBoxList(Context context) {
+		mContext = context;
+		mHandler = new Handler();
 	}
 
+	public void add(MessageBox box) {
+		mMessageBoxs.add(box);
+	}
+
+	public void setEnabled(boolean enabled) {
+		mEnabled = enabled;
+		for (MessageBox box : mMessageBoxs) {
+			box.setEnabled(mEnabled);
+		}
+	}
+
+	public void destroy() {
+		for (MessageBox box : mMessageBoxs) {
+			box.destroy();
+		}
+		
+	}
 }

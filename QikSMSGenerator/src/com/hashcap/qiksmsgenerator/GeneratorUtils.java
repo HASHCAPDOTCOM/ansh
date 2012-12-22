@@ -17,7 +17,7 @@
 
 package com.hashcap.qiksmsgenerator;
 
-public class Util {
+public class GeneratorUtils {
 	public static enum SettingsTag {
 		CONVERSATION, INBOX, SENT, DRAFT, OUTBOX, FAILED;
 	}
