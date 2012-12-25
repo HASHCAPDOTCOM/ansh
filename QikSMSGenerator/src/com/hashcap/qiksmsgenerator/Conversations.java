@@ -17,13 +17,14 @@
 
 package com.hashcap.qiksmsgenerator;
 
-import com.hashcap.qiksmsgenerator.GeneratorUtils.SettingsTag;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import com.hashcap.qiksmsgenerator.GeneratorUtils.TagIndex;
+import com.hashcap.qiksmsgenerator.GeneratorUtils.TagName;
 
 public class Conversations {
 	private Context mContext;
@@ -31,22 +32,28 @@ public class Conversations {
 	private EditText mEditTextConversations;
 	private EditText mEditTextMessages;
 	private ImageView mImageViewSettings;
-	private SettingsTag mSettingsTag;
+	private int mTag;
+	private DataSettings mDataSettings;
 
 	public Conversations(Context context, EditText converstions,
 			EditText messages, ImageView settings) {
 		mContext = context;
-		mSettingsTag = SettingsTag.CONVERSATION;
+		mTag = TagIndex.CONVERSATION;
 		mEditTextConversations = converstions;
 		mEditTextMessages = messages;
 		mImageViewSettings = settings;
+		mDataSettings = new DataSettings(mContext, TagName.getName(mTag));
 		mImageViewSettings.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mContext, DataSettingsActivity.class);
-				intent.putExtra("TAG", mSettingsTag);
-				mContext.startActivity(intent);
+				intent.putExtra("TAG", mTag);
+				intent.putExtra("data", mDataSettings);
+				if (mContext instanceof MainActivity) {
+					((MainActivity) mContext).startActivityForResult(intent,
+							mTag);
+				}
 			}
 		});
 	}
@@ -65,8 +72,15 @@ public class Conversations {
 	}
 
 	public void destroy() {
-		// TODO Auto-generated method stub
-		
+		save();
+	}
+
+	private void save() {
+		mDataSettings.save(mContext, TagName.getName(mTag));
+	}
+
+	public void setSettingsData(DataSettings dataSettings) {
+		mDataSettings = dataSettings;
 	}
 
 }

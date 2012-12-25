@@ -17,18 +17,18 @@
 
 package com.hashcap.qiksmsgenerator;
 
-import com.hashcap.qiksmsgenerator.GeneratorUtils.SettingsTag;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import com.hashcap.qiksmsgenerator.GeneratorUtils.TagName;
 
 public class MessageBox {
 	private Context mContext;
@@ -36,22 +36,22 @@ public class MessageBox {
 	private CheckBox mCheckBox;
 	private EditText mEditText;
 	private ImageView mImageViewSettings;
-	private SettingsTag mSettingsTag;
-	private MessageData mMessageData;
+	private int mTag;
+	private DataSettings mDataSettings;
 	private boolean mEnabled;
 	private SharedPreferences mPreferences;
 
 	public MessageBox(Context context, CheckBox checkBox, EditText editText,
-			ImageView imageView, GeneratorUtils.SettingsTag tag) {
+			ImageView imageView, int tag) {
 		mContext = context;
 		mCheckBox = checkBox;
 		mEditText = editText;
 		mImageViewSettings = imageView;
-		mSettingsTag = tag;
+		mTag = tag;
+		mDataSettings = new DataSettings(mContext, TagName.getName(mTag));
 		mPreferences = mContext.getSharedPreferences("GEN_DATA",
 				Context.MODE_PRIVATE);
-		boolean checked = mPreferences.getBoolean(mSettingsTag.toString(),
-				false);
+		boolean checked = mPreferences.getBoolean(TagName.getName(mTag), false);
 		if (mCheckBox != null) {
 			mCheckBox.setChecked(checked);
 			if (mEditText != null) {
@@ -71,8 +71,11 @@ public class MessageBox {
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent(mContext, DataSettingsActivity.class);
-			intent.putExtra("TAG", mSettingsTag);
-			mContext.startActivity(intent);
+			intent.putExtra("TAG", mTag);
+			intent.putExtra("data", mDataSettings);
+			if (mContext instanceof MainActivity) {
+				((MainActivity) mContext).startActivityForResult(intent, mTag);
+			}
 		}
 	};
 
@@ -102,8 +105,24 @@ public class MessageBox {
 	}
 
 	public void destroy() {
-		SharedPreferences.Editor editor = mPreferences.edit();
-		editor.putBoolean(mSettingsTag.toString(), mCheckBox.isChecked());
-		editor.apply();
+		save();
 	}
+
+	private void save() {
+		SharedPreferences.Editor editor = mPreferences.edit();
+		editor.putBoolean(TagName.getName(mTag), mCheckBox.isChecked());
+		editor.apply();
+		mDataSettings.save(mContext,TagName.getName(mTag));
+	}
+
+	public void setSettingsData(DataSettings dataSettings) {
+		mDataSettings = dataSettings;
+	}
+
+	@Override
+	public String toString() {
+		
+		return TagName.getName(mTag) + " MessageBox";
+	}
+
 }

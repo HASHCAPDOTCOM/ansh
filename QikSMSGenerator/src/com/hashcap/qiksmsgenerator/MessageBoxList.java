@@ -17,21 +17,19 @@
 
 package com.hashcap.qiksmsgenerator;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 import android.content.Context;
 import android.os.Handler;
 
 public class MessageBoxList {
-	private HashSet<MessageBox> mMessageBoxs = new HashSet<MessageBox>();
+	private ArrayList<MessageBox> mMessageBoxs = new ArrayList<MessageBox>();
 
 	private boolean mEnabled;
 	private Context mContext;
-	private Handler mHandler;
 
 	public MessageBoxList(Context context) {
 		mContext = context;
-		mHandler = new Handler();
 	}
 
 	public void add(MessageBox box) {
@@ -49,6 +47,11 @@ public class MessageBoxList {
 		for (MessageBox box : mMessageBoxs) {
 			box.destroy();
 		}
-		
+
+	}
+
+	public void setSettingsData(int requestCode, DataSettings dataSettings) {
+		mMessageBoxs.get(requestCode).setSettingsData(dataSettings);
+
 	}
 }
