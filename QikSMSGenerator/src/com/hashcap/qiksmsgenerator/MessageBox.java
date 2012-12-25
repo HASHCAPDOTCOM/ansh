@@ -20,6 +20,7 @@ package com.hashcap.qiksmsgenerator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.text.InputFilter;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
@@ -29,8 +30,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.hashcap.qiksmsgenerator.GeneratorUtils.TagName;
+import com.hashcap.qiksmsgenerator.support.InputFilterMinMax;
 
 public class MessageBox {
+
+	public static final int CONVERSATION = 0;
+	public static final int INBOX = 1;
+	public static final int SENT = 2;
+	public static final int DRAFT = 3;
+	public static final int OUTBOX = 4;
+	public static final int FAILED = 5;
+
 	private Context mContext;
 
 	private CheckBox mCheckBox;
@@ -51,6 +61,10 @@ public class MessageBox {
 		mDataSettings = new DataSettings(mContext, TagName.getName(mTag));
 		mPreferences = mContext.getSharedPreferences("GEN_DATA",
 				Context.MODE_PRIVATE);
+
+		mEditText.setFilters(new InputFilter[] { new InputFilterMinMax(
+				mContext, "0", "5000") });
+
 		boolean checked = mPreferences.getBoolean(TagName.getName(mTag), false);
 		if (mCheckBox != null) {
 			mCheckBox.setChecked(checked);
@@ -112,7 +126,7 @@ public class MessageBox {
 		SharedPreferences.Editor editor = mPreferences.edit();
 		editor.putBoolean(TagName.getName(mTag), mCheckBox.isChecked());
 		editor.apply();
-		mDataSettings.save(mContext,TagName.getName(mTag));
+		mDataSettings.save(mContext, TagName.getName(mTag));
 	}
 
 	public void setSettingsData(DataSettings dataSettings) {
@@ -121,8 +135,14 @@ public class MessageBox {
 
 	@Override
 	public String toString() {
-		
+
 		return TagName.getName(mTag) + " MessageBox";
+	}
+
+	public Generator getGenerator() {
+		Generator generator = new Generator(mTag);
+
+		return generator;
 	}
 
 }

@@ -19,13 +19,55 @@
 -->
 <resources>
 
-    <string-array name="message_text">
+    <string-array name="message_text_type">
         <item>English</item>
         <item>Chinise</item>
         <item>Japanise</item>
         <item>Korean</item>
         <item>Spanish</item>
         <item>Thai</item>
+    </string-array>
+
+    <integer-array name="message_text_language_arch">
+        <item>8</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+        <item>16</item>
+    </integer-array>
+
+    <string-array name="message_text">
+        <item>Android applications are written in the Java programming language.</item>
+        <item>Android应用程序是用Java编程语言编写的。</item>
+        <item>AndroidアプリケーションはJavaプログラミング言語で書かれている。</item>
+        <item>안드로이드 애플리케이션은 자바 프로그래밍 언어로 기록됩니다.</item>
+        <item>Aplicaciones de Android están escritos en el lenguaje de programación Java.</item>
+        <item>โปรแกรม Android ที่เขียนในภาษาการเขียนโปรแกรม Java</item>
+    </string-array>
+    <string-array name="phone_number">
+        <item>1555-521-5554</item>
+        <item>1555-521-5556</item>
+        <item>1555-521-5558</item>
+        <item>+91-9990999991</item>
+        <item>06580000788</item>
+        <item>(898) 909-9999</item>
+    </string-array>
+    <string-array name="email_address">
+        <item>test1234@gmail.com</item>
+        <item>test_1234@gmail.com</item>
+        <item>test.hashcap_1234@gmail.co.in</item>
+        <item>test@hashcap.com</item>
+        <item>qicksms_generator@hashcap.com</item>
+        <item>1234567890@abc.com</item>
+    </string-array>
+    <string-array name="web_address">
+        <item>http://www.google.com</item>
+        <item>www.android.com</item>
+        <item>http://source.android.com</item>
+        <item>yahoo.co.in</item>
+        <item>http://google.uk</item>
+        <item>www.w3schools.com</item>
     </string-array>
 
 </resources>

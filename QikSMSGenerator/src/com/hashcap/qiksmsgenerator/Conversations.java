@@ -19,12 +19,14 @@ package com.hashcap.qiksmsgenerator;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.hashcap.qiksmsgenerator.GeneratorUtils.TagIndex;
 import com.hashcap.qiksmsgenerator.GeneratorUtils.TagName;
+import com.hashcap.qiksmsgenerator.support.InputFilterMinMax;
 
 public class Conversations {
 	private Context mContext;
@@ -41,6 +43,13 @@ public class Conversations {
 		mTag = TagIndex.CONVERSATION;
 		mEditTextConversations = converstions;
 		mEditTextMessages = messages;
+
+		mEditTextConversations
+				.setFilters(new InputFilter[] { new InputFilterMinMax(mContext,
+						"0", "5000") });
+		mEditTextMessages.setFilters(new InputFilter[] { new InputFilterMinMax(
+				mContext, "0", "5000") });
+
 		mImageViewSettings = settings;
 		mDataSettings = new DataSettings(mContext, TagName.getName(mTag));
 		mImageViewSettings.setOnClickListener(new View.OnClickListener() {

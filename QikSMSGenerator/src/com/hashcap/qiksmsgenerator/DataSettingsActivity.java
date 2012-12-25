@@ -17,9 +17,12 @@
 
 package com.hashcap.qiksmsgenerator;
 
+import com.hashcap.qiksmsgenerator.support.InputFilterMinMax;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -62,6 +65,9 @@ public class DataSettingsActivity extends Activity {
 		mCheckBoxSingleRecipient = (RadioButton) findViewById(R.id.radioButton_single_recipient);
 		mCheckBoxMultipleRecipients = (RadioButton) findViewById(R.id.radioButton_multiple_recipients);
 		mEditTextParts = (EditText) findViewById(R.id.editText_message_parts);
+		mEditTextParts.setFilters(new InputFilter[] { new InputFilterMinMax(
+				this, "0", "15") });
+
 		mCheckBoxText = (CheckBox) findViewById(R.id.checkBox_message_text);
 		mSpinnerTextType = (Spinner) findViewById(R.id.spinner_message_text_type);
 		mCheckBoxPhone = (CheckBox) findViewById(R.id.checkBox_message_phone_number);

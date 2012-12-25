@@ -131,8 +131,7 @@
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:hint="@string/number"
-                                android:inputType="number"
-                                android:text="1" />
+                                android:inputType="number"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -158,8 +157,7 @@
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:hint="@string/number"
-                                android:inputType="number"
-                                android:text="1" />
+                                android:inputType="number" />
                         </LinearLayout>
                     </LinearLayout>
                 </RelativeLayout>
@@ -233,8 +231,7 @@
                             android:layout_weight="1"
                             android:ems="10"
                             android:hint="@string/number"
-                            android:inputType="number"
-                            android:text="1" />
+                            android:inputType="number" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -281,8 +278,7 @@
                             android:layout_weight="1"
                             android:ems="10"
                             android:hint="@string/number"
-                            android:inputType="number"
-                            android:text="1" />
+                            android:inputType="number" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -329,8 +325,7 @@
                             android:layout_weight="1"
                             android:ems="10"
                             android:hint="@string/number"
-                            android:inputType="number"
-                            android:text="1" />
+                            android:inputType="number" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -368,7 +363,7 @@
                             android:checked="true"
                             android:ellipsize="marquee"
                             android:singleLine="true"
-                            android:text="@string/sent" />
+                            android:text="@string/outbox" />
 
                         <EditText
                             android:id="@+id/editText_outbox"
@@ -377,8 +372,7 @@
                             android:layout_weight="1"
                             android:ems="10"
                             android:hint="@string/number"
-                            android:inputType="number"
-                            android:text="1" />
+                            android:inputType="number" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -425,8 +419,7 @@
                             android:layout_weight="1"
                             android:ems="10"
                             android:hint="@string/number"
-                            android:inputType="number"
-                            android:text="1" />
+                            android:inputType="number" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
