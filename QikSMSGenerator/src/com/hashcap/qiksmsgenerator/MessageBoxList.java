@@ -6,12 +6,16 @@ package com.hashcap.qiksmsgenerator;
 
 import java.util.ArrayList;
 
+import com.hashcap.qiksmsgenerator.support.Generator;
+import com.hashcap.qiksmsgenerator.support.OnGeneratorStartListener;
+
 import android.content.Context;
 import android.os.Handler;
 
 public class MessageBoxList {
 	private ArrayList<MessageBox> mMessageBoxs = new ArrayList<MessageBox>();
-
+	private OnGeneratorStartListener mGeneratorStartListener;
+	private ArrayList<Generator> mGenerators = new ArrayList<Generator>();
 	private boolean mEnabled;
 	private Context mContext;
 
@@ -40,5 +44,25 @@ public class MessageBoxList {
 	public void setSettingsData(int requestCode, DataSettings dataSettings) {
 		mMessageBoxs.get(requestCode).setSettingsData(dataSettings);
 
+	}
+
+	public void ensureGenerator(OnGeneratorStartListener onGeneratorStartListener) {
+		for(MessageBox messageBox : mMessageBoxs){
+			if(messageBox.isChecked()){
+				mGenerators.add(messageBox.getGenerator(onGeneratorStartListener));
+			}
+		}
+	}
+
+	public void generate() {
+			if(mGenerators != null && mGenerators.size() > 0){
+				for(Generator generator : mGenerators){
+					generator.start();
+				}
+				if(mGeneratorStartListener != null){
+					
+				}
+			}
+		
 	}
 }

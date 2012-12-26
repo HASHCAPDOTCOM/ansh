@@ -2,7 +2,12 @@
  * Copyright (C) 2012-2013 Hashcap Pvt. Ltd.
  */
 
-package com.hashcap.qiksmsgenerator;
+package com.hashcap.qiksmsgenerator.ui;
+
+import com.hashcap.qiksmsgenerator.DataSettings;
+import com.hashcap.qiksmsgenerator.R;
+import com.hashcap.qiksmsgenerator.R.id;
+import com.hashcap.qiksmsgenerator.R.layout;
 
 import android.app.Activity;
 import android.content.Intent;

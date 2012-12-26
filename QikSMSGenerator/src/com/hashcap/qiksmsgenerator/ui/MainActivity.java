@@ -2,7 +2,7 @@
  * Copyright (C) 2012-2013 Hashcap Pvt. Ltd.
  */
 
-package com.hashcap.qiksmsgenerator;
+package com.hashcap.qiksmsgenerator.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,20 +10,31 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 
+import com.hashcap.qiksmsgenerator.Conversations;
+import com.hashcap.qiksmsgenerator.DataSettings;
+import com.hashcap.qiksmsgenerator.GeneratorUtils;
 import com.hashcap.qiksmsgenerator.GeneratorUtils.TagIndex;
+import com.hashcap.qiksmsgenerator.MessageBox;
+import com.hashcap.qiksmsgenerator.MessageBoxList;
+import com.hashcap.qiksmsgenerator.R;
+import com.hashcap.qiksmsgenerator.support.Generator;
+import com.hashcap.qiksmsgenerator.support.OnGeneratorStartListener;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnGeneratorStartListener {
 
 	private RadioButton mRadioButtonCoversations;
 	private RadioButton mRadioButtonMessageBox;
 	private SharedPreferences mPreferences;
 	private MessageBoxList mMessageBoxList;
+
+	private boolean mBound;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +88,12 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Activity.RESULT_OK) {
-			DataSettings dataSettings = (DataSettings) data.getExtras().get("data");
+			DataSettings dataSettings = (DataSettings) data.getExtras().get(
+					"data");
 			switch (requestCode) {
 			case TagIndex.CONVERSATION:
-				((Conversations)mRadioButtonCoversations.getTag()).setSettingsData(dataSettings);
+				((Conversations) mRadioButtonCoversations.getTag())
+						.setSettingsData(dataSettings);
 				break;
 			case TagIndex.INBOX:
 			case TagIndex.SENT:
@@ -111,6 +124,37 @@ public class MainActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_start: {
+			if (mRadioButtonCoversations.isChecked()) {
+				Conversations conversations = (Conversations) mRadioButtonCoversations
+						.getTag();
+				Generator generator = conversations.getGenerator();
+				generator.setOnGeneratorStartListener(this);
+				generator.start();
+			}
+			if (mRadioButtonMessageBox.isChecked()) {
+				MessageBoxList messageBoxList = (MessageBoxList) mRadioButtonMessageBox
+						.getTag();
+				messageBoxList.ensureGenerator(this);
+				messageBoxList.generate();
+			}
+			break;
+		}
+
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onGeneratorStart(Generator generator) {
+		
 	}
 
 	private void initViews() {
@@ -198,4 +242,5 @@ public class MainActivity extends Activity {
 				});
 
 	}
+
 }

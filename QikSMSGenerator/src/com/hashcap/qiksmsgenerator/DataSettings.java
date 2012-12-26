@@ -18,12 +18,10 @@ public class DataSettings implements Parcelable {
 	private boolean mEmail;
 	private boolean mWeb;
 	private boolean mSmiley;
-	private Context mContext;
 
 	private SharedPreferences mPreferences;
 
 	public DataSettings(Context context, String name) {
-		mContext = context;
 		mPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);
 		mMessages = mPreferences.getInt("messages", 1);
 		mSingleRecipient = mPreferences.getBoolean("single_recipient", true);
@@ -42,6 +40,17 @@ public class DataSettings implements Parcelable {
 		mEmail = source.readByte() == 1;
 		mWeb = source.readByte() == 1;
 		mSmiley = source.readByte() == 1;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(mMessages);
+		dest.writeByte((byte) (mSingleRecipient ? 1 : 0));
+		dest.writeByte((byte) (mText ? 1 : 0));
+		dest.writeByte((byte) (mPhone ? 1 : 0));
+		dest.writeByte((byte) (mEmail ? 1 : 0));
+		dest.writeByte((byte) (mWeb ? 1 : 0));
+		dest.writeByte((byte) (mSmiley ? 1 : 0));
 	}
 
 	public boolean isText() {
@@ -106,17 +115,6 @@ public class DataSettings implements Parcelable {
 		return 0;
 	}
 
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(mMessages);
-		dest.writeByte((byte) (mSingleRecipient ? 1 : 0));
-		dest.writeByte((byte) (mText ? 1 : 0));
-		dest.writeByte((byte) (mPhone ? 1 : 0));
-		dest.writeByte((byte) (mEmail ? 1 : 0));
-		dest.writeByte((byte) (mWeb ? 1 : 0));
-		dest.writeByte((byte) (mSmiley ? 1 : 0));
-	}
-
 	public static final Parcelable.Creator<DataSettings> CREATOR = new Creator<DataSettings>() {
 
 		@Override
@@ -133,6 +131,7 @@ public class DataSettings implements Parcelable {
 	public void save(Context context, String name) {
 		mPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = mPreferences.edit();
+		editor.putInt("messages", mMessages);
 		editor.putBoolean("single_recipient", mSingleRecipient);
 		editor.putBoolean("text", mText);
 		editor.putBoolean("phone", mPhone);

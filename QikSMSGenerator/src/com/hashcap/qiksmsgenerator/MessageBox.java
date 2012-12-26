@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
@@ -17,7 +18,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.hashcap.qiksmsgenerator.GeneratorUtils.TagName;
+import com.hashcap.qiksmsgenerator.support.Generator;
 import com.hashcap.qiksmsgenerator.support.InputFilterMinMax;
+import com.hashcap.qiksmsgenerator.support.OnGeneratorStartListener;
+import com.hashcap.qiksmsgenerator.ui.DataSettingsActivity;
+import com.hashcap.qiksmsgenerator.ui.MainActivity;
 
 public class MessageBox {
 
@@ -73,6 +78,12 @@ public class MessageBox {
 		public void onClick(View v) {
 			Intent intent = new Intent(mContext, DataSettingsActivity.class);
 			intent.putExtra("TAG", mTag);
+			String messages = mEditText.getText().toString();
+			if (TextUtils.isEmpty(messages)) {
+				mDataSettings.setMessages(0);
+			} else {
+				mDataSettings.setMessages(Integer.parseInt(messages));
+			}
 			intent.putExtra("data", mDataSettings);
 			if (mContext instanceof MainActivity) {
 				((MainActivity) mContext).startActivityForResult(intent, mTag);
@@ -126,10 +137,17 @@ public class MessageBox {
 		return TagName.getName(mTag) + " MessageBox";
 	}
 
-	public Generator getGenerator() {
-		Generator generator = new Generator(mTag);
+	public Generator getGenerator(
+			OnGeneratorStartListener onGeneratorStartListener) {
 
+		Generator generator = new Generator(mTag);
+		generator.setOnGeneratorStartListener(onGeneratorStartListener);
+		generator.setDataSettings(mDataSettings);
 		return generator;
+	}
+
+	public boolean isChecked() {
+		return mCheckBox.isChecked();
 	}
 
 }
