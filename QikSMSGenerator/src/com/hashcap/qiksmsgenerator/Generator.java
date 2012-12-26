@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2012-2013 Hashcap Pvt. Ltd.
+ */
 package com.hashcap.qiksmsgenerator;
 
 import com.hashcap.qiksmsgenerator.GeneratorUtils.TagName;

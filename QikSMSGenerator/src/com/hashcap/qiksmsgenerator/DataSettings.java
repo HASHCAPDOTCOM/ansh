@@ -1,18 +1,5 @@
 /*
- * Copyright (C) 2008-2008 Hashcap Pvt. Ltd.
- * Copyright (C) 2006-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright (C) 2012-2013 Hashcap Pvt. Ltd.
  */
 
 package com.hashcap.qiksmsgenerator;
@@ -24,11 +11,9 @@ import android.os.Parcelable;
 
 public class DataSettings implements Parcelable {
 
-	private int mParts;
 	private int mMessages;
 	private boolean mSingleRecipient;
 	private boolean mText;
-	private int mTextType;
 	private boolean mPhone;
 	private boolean mEmail;
 	private boolean mWeb;
@@ -40,11 +25,9 @@ public class DataSettings implements Parcelable {
 	public DataSettings(Context context, String name) {
 		mContext = context;
 		mPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);
-		mParts = mPreferences.getInt("part", 1);
 		mMessages = mPreferences.getInt("messages", 1);
 		mSingleRecipient = mPreferences.getBoolean("single_recipient", true);
 		mText = mPreferences.getBoolean("text", true);
-		mTextType = mPreferences.getInt("text_type", 0);
 		mPhone = mPreferences.getBoolean("phone", true);
 		mEmail = mPreferences.getBoolean("email", true);
 		mWeb = mPreferences.getBoolean("web", true);
@@ -52,11 +35,9 @@ public class DataSettings implements Parcelable {
 	}
 
 	public DataSettings(Parcel source) {
-		mParts = source.readInt();
 		mMessages = source.readInt();
 		mSingleRecipient = source.readByte() == 1;
 		mText = source.readByte() == 1;
-		mTextType = source.readInt();
 		mPhone = source.readByte() == 1;
 		mEmail = source.readByte() == 1;
 		mWeb = source.readByte() == 1;
@@ -71,28 +52,12 @@ public class DataSettings implements Parcelable {
 		this.mText = text;
 	}
 
-	public int getTextType() {
-		return mTextType;
-	}
-
-	public void setTextType(int textType) {
-		this.mTextType = textType;
-	}
-
 	public boolean isSingleRecipient() {
 		return mSingleRecipient;
 	}
 
 	public void setSingleRecipient(boolean singleRecipient) {
 		this.mSingleRecipient = singleRecipient;
-	}
-
-	public int getParts() {
-		return mParts;
-	}
-
-	public void setParts(int parts) {
-		this.mParts = parts;
 	}
 
 	public int getMessages() {
@@ -143,11 +108,9 @@ public class DataSettings implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(mParts);
 		dest.writeInt(mMessages);
 		dest.writeByte((byte) (mSingleRecipient ? 1 : 0));
 		dest.writeByte((byte) (mText ? 1 : 0));
-		dest.writeInt(mTextType);
 		dest.writeByte((byte) (mPhone ? 1 : 0));
 		dest.writeByte((byte) (mEmail ? 1 : 0));
 		dest.writeByte((byte) (mWeb ? 1 : 0));
@@ -168,14 +131,10 @@ public class DataSettings implements Parcelable {
 	};
 
 	public void save(Context context, String name) {
-		mPreferences = context
-				.getSharedPreferences(name, Context.MODE_PRIVATE);
+		mPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = mPreferences.edit();
-		editor.putInt("part", mParts);
-		editor.putInt("part", mParts);
 		editor.putBoolean("single_recipient", mSingleRecipient);
 		editor.putBoolean("text", mText);
-		editor.putInt("text_type", mTextType);
 		editor.putBoolean("phone", mPhone);
 		editor.putBoolean("email", mEmail);
 		editor.putBoolean("web", mWeb);
