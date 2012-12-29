@@ -5,10 +5,14 @@
 package com.hashcap.qiksmsgenerator.ui;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
@@ -16,25 +20,32 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.hashcap.qiksmsgenerator.Conversations;
 import com.hashcap.qiksmsgenerator.DataSettings;
+import com.hashcap.qiksmsgenerator.GeneratorServeice;
+import com.hashcap.qiksmsgenerator.GeneratorServeice.GeneratorBinder;
 import com.hashcap.qiksmsgenerator.GeneratorUtils;
 import com.hashcap.qiksmsgenerator.GeneratorUtils.TagIndex;
 import com.hashcap.qiksmsgenerator.MessageBox;
 import com.hashcap.qiksmsgenerator.MessageBoxList;
 import com.hashcap.qiksmsgenerator.R;
 import com.hashcap.qiksmsgenerator.support.Generator;
+import com.hashcap.qiksmsgenerator.support.MaxGeneratorException;
+import com.hashcap.qiksmsgenerator.support.OnGeneratorProgressUpdateListener;
 import com.hashcap.qiksmsgenerator.support.OnGeneratorStartListener;
 
-public class MainActivity extends Activity implements OnGeneratorStartListener {
-
+public class MainActivity extends Activity implements OnGeneratorStartListener,
+		OnGeneratorProgressUpdateListener {
+	private static final String TAG = "MainActivity";
 	private RadioButton mRadioButtonCoversations;
 	private RadioButton mRadioButtonMessageBox;
 	private SharedPreferences mPreferences;
 	private MessageBoxList mMessageBoxList;
 
 	private boolean mBound;
+	private GeneratorServeice mGeneratorServeice;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +86,14 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 
 	@Override
 	protected void onStart() {
-
+		Intent intent = new Intent(this, GeneratorServeice.class);
+		bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
 		super.onStart();
 	}
 
 	@Override
 	protected void onStop() {
-
+		unbindService(mServiceConnection);
 		super.onStop();
 	}
 
@@ -154,8 +166,31 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 
 	@Override
 	public void onGeneratorStart(Generator generator) {
-		
+		if (!mBound) {
+			try {
+				mGeneratorServeice.add(generator);
+			} catch (MaxGeneratorException e) {
+				Toast.makeText(this, "Maximum " + Generator.MAX_GENERATOR
+						+ "Can be execute at a time.", Toast.LENGTH_SHORT).show();
+				Log.e(TAG, "Error "+ e);
+			}
+		}
 	}
+
+	private ServiceConnection mServiceConnection = new ServiceConnection() {
+
+		@Override
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			GeneratorBinder binder = (GeneratorBinder) service;
+			mGeneratorServeice = binder.getService();
+			mBound = true;
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName arg0) {
+			mBound = false;
+		}
+	};
 
 	private void initViews() {
 		mRadioButtonCoversations = (RadioButton) findViewById(R.id.radioButton_conversation_title);
@@ -240,6 +275,12 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 
 					}
 				});
+
+	}
+
+	@Override
+	public void onGeneratorProgressUpdate(int total, int count) {
+		// TODO Auto-generated method stub
 
 	}
 
