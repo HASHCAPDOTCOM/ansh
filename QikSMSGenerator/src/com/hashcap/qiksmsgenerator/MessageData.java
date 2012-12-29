@@ -53,7 +53,7 @@ public class MessageData {
 	}
 
 	public String getText(int index) {
-		String text = "";
+		String text = "ABCDabcd";
 		try {
 			text = mStringsText[index];
 		} catch (Exception e) {

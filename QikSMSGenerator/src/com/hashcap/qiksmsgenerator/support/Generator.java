@@ -113,7 +113,7 @@ public class Generator {
 				builder.append(" " + data.getSmiley());
 			}
 			if (dataSettings.isPhone()) {
-				builder.append(data.getPhoneNumber(i));
+				builder.append(" " + data.getPhoneNumber(i));
 			}
 			if (dataSettings.isWeb()) {
 				builder.append(" " + data.getWebAddress(i));
