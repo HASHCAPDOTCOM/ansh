@@ -3,14 +3,18 @@
  */
 package com.hashcap.qiksmsgenerator.support;
 
+import android.content.Context;
+
 import com.hashcap.qiksmsgenerator.GeneratorUtils.TagName;
 
 public class ConversationsGenerator extends Generator {
 	private int mConversations;
 	private int mType;
+	private Context mContext;
 
-	public ConversationsGenerator(int type) {
-		super(type);
+	public ConversationsGenerator(Context context, int type) {
+		super(context, type);
+		mContext = context;
 		mType = type;
 	}
 
@@ -25,8 +29,8 @@ public class ConversationsGenerator extends Generator {
 	@Override
 	public String toString() {
 		return "Generator = " + TagName.getName(mType) + "mConversations = "
-				+ mConversations + "mMessages =  " + getMessages() + "mUri = "
-				+ getUri();
+				+ mConversations + "mMessages =  "
+				+ super.getDataSettings().getMessages() + "mUri = " + getUri();
 	}
 
 }

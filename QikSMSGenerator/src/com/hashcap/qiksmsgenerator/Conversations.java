@@ -51,7 +51,7 @@ public class Conversations {
 			public void onClick(View v) {
 				Intent intent = new Intent(mContext, DataSettingsActivity.class);
 				intent.putExtra("TAG", mTag);
-				
+
 				String conversations = mEditTextConversations.getText()
 						.toString();
 				String messages = mEditTextMessages.getText().toString();
@@ -102,7 +102,7 @@ public class Conversations {
 	}
 
 	public Generator getGenerator() {
-		ConversationsGenerator generator = new ConversationsGenerator(
+		ConversationsGenerator generator = new ConversationsGenerator(mContext,
 				TagIndex.CONVERSATION);
 		generator.setDataSettings(mDataSettings);
 

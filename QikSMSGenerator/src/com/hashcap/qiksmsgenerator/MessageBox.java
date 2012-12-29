@@ -140,7 +140,7 @@ public class MessageBox {
 	public Generator getGenerator(
 			OnGeneratorStartListener onGeneratorStartListener) {
 
-		Generator generator = new Generator(mTag);
+		Generator generator = new Generator(mContext, mTag);
 		generator.setOnGeneratorStartListener(onGeneratorStartListener);
 		generator.setDataSettings(mDataSettings);
 		return generator;

@@ -26,6 +26,18 @@
         <item>1234567890</item>
         <item>9876543210</item>
     </string-array>
+     <string-array name="recipients">
+        <item>15555215554</item>
+        <item>15555215556</item>
+        <item>15555215558</item>
+        <item>919990999991</item>
+        <item>06580000788</item>
+        <item>8989099999</item>
+        <item>9900000999</item>
+        <item>1100000111</item>
+        <item>1234567890</item>
+        <item>9876543210</item>
+    </string-array>
     <string-array name="email_address">
         <item>test1234@gmail.com</item>
         <item>test_1234@gmail.com</item>
