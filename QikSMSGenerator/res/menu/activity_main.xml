@@ -13,13 +13,12 @@
     <item
         android:id="@+id/menu_stop"
         android:orderInCategory="2"
-        android:showAsAction="always"
-        android:title="@string/stop"
-        android:visible="false"/>
+        android:showAsAction="never"
+        android:title="@string/stop"/>
     <item
-        android:id="@+id/menu_settings"
+        android:id="@+id/menu_about"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/settings"/>
+        android:title="@string/about"/>
 
 </menu>

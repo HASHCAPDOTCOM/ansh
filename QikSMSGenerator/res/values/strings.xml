@@ -9,6 +9,7 @@
 
     <string name="app_name">QikSMS Generator</string>
     <string name="settings">Settings</string>
+    <string name="about">About</string>
     <string name="generate_conversation">Generate Conversation</string>
     <string name="generate_message_for_box">Generate for message box</string>
     <string name="conversations">Conversations</string>

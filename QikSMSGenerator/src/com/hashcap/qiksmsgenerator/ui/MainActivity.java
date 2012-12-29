@@ -175,7 +175,11 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 			}
 			break;
 		}
-
+		case R.id.menu_stop: {
+			if(mBound){
+				mGeneratorServeice.cancel();
+			}
+		}
 		default:
 			break;
 		}

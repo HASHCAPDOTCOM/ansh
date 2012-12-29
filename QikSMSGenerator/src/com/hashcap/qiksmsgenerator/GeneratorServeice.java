@@ -11,6 +11,7 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Telephony.Sms;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.hashcap.qiksmsgenerator.GeneratorUtils.TagIndex;
@@ -72,6 +73,7 @@ public class GeneratorServeice extends Service {
 				if (mGenerator == null) {
 					mGenerator = mGenerators.poll();
 					if (mGenerator != null) {
+						mIsCanceled = false;
 						generateMessages();
 					} else {
 						resetGenerator();
@@ -88,12 +90,18 @@ public class GeneratorServeice extends Service {
 		Generator.sTotal = 0;
 		Generator.sPosition = 0;
 		mGenerators.clear();
-		mStatus = false;
-		if (mGeneratorProgressUpdateListener != null) {
-			mGeneratorProgressUpdateListener.onGeneratorProcessEnd();
+		if (mGenerator != null) {
+			Toast.makeText(GeneratorServeice.this,
+					"Operation aborted by user.", Toast.LENGTH_SHORT).show();
+			mGenerator = null;
+		}else{
 			Toast.makeText(GeneratorServeice.this,
 					"SMS Generator Sucessfuly Completed.", Toast.LENGTH_SHORT)
 					.show();
+		}
+		mStatus = false;
+		if (mGeneratorProgressUpdateListener != null) {
+			mGeneratorProgressUpdateListener.onGeneratorProcessEnd();
 		}
 	}
 
@@ -115,6 +123,8 @@ public class GeneratorServeice extends Service {
 						generator.setGenerated(0);
 						if (generator.getDataSettings().getMessages() == result) {
 							executeNextGenerator();
+						} else {
+							resetGenerator();
 						}
 					}
 
@@ -145,6 +155,40 @@ public class GeneratorServeice extends Service {
 
 					if (generator != null) {
 						if (generator.getType() == TagIndex.CONVERSATION) {
+							if (generator instanceof ConversationsGenerator) {
+								ConversationsGenerator conversationsGenerator = (ConversationsGenerator) generator;
+								int conversations = ((ConversationsDataSettings) conversationsGenerator
+										.getDataSettings()).getConversations();
+								int messages = conversationsGenerator
+										.getDataSettings().getMessages();
+								if (conversations <= 0 || messages <= 0) {
+									return 0;
+								}
+								for (int i = 0; i < conversations; i++) {
+
+									String address = TextUtils.join(",",
+											conversationsGenerator.getAddress()
+													.toArray());
+									for (int j = 0; j < messages; j++) {
+										if (isCanceled()) {
+											return i;
+										}
+										ContentValues values = generator
+												.getSms(address);
+										if (values.containsKey(Sms.ADDRESS)) {
+											values.remove(Sms.ADDRESS);
+										}
+										values.put(Sms.ADDRESS, address);
+										Uri uri = getContentResolver().insert(
+												Sms.CONTENT_URI, values);
+										if (uri != null) {
+											generator.increment();
+											publishProgress(0);
+										}
+									}
+								}
+								return messages;
+							}
 
 						} else {
 							for (int i = 0; i < generator.getDataSettings()
@@ -152,7 +196,7 @@ public class GeneratorServeice extends Service {
 								if (isCanceled()) {
 									return i;
 								}
-								ContentValues values = generator.getSms();
+								ContentValues values = generator.getSms(null);
 								Uri uri = getContentResolver().insert(
 										Sms.CONTENT_URI, values);
 								if (uri != null) {
@@ -199,5 +243,9 @@ public class GeneratorServeice extends Service {
 
 	public boolean getStatus() {
 		return mStatus;
+	}
+
+	public void cancel() {
+		mIsCanceled = true;
 	}
 }

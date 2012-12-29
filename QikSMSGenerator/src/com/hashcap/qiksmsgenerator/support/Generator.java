@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.provider.Telephony.Sms;
 import android.provider.Telephony.Threads;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.hashcap.qiksmsgenerator.DataSettings;
 import com.hashcap.qiksmsgenerator.GeneratorUtils.TagIndex;
@@ -20,6 +21,7 @@ import com.hashcap.qiksmsgenerator.GeneratorUtils.TagName;
 import com.hashcap.qiksmsgenerator.MessageData;
 
 public class Generator {
+	private static String TAG = "Generator";
 	public static final int MAX_GENERATOR = 5;
 	public static int sTotal = 0;
 	public static int sPosition = 0;
@@ -94,27 +96,7 @@ public class Generator {
 		mGeneratorStartListener = generatorStartListener;
 	}
 
-	public ContentValues getSms() {
-		ContentValues values = new ContentValues();
-		values.put("address", TextUtils.join(",", getAddress().toArray()));
-		long now = System.currentTimeMillis();
-
-		values.put("date", now);
-		values.put("read", 0);
-		values.put("seen", 0);
-		values.put("reply_path_present", 0);
-		values.put("service_center", "000000000000");
-		values.put("body", getBody());
-		Long threadId = values.getAsLong(Sms.THREAD_ID);
-		String address = values.getAsString(Sms.ADDRESS);
-		if (((threadId == null) || (threadId == 0)) && (address != null)) {
-			threadId = Threads.getOrCreateThreadId(getContext(), address);
-			values.put(Sms.THREAD_ID, threadId);
-		}
-		values.put(Sms.TYPE, mType);
-		return values;
-	}
-
+	
 	private String getBody() {
 		int index = RANDOM.nextInt(6);
 		MessageData data = MessageData.getInstance(getContext());
@@ -140,13 +122,11 @@ public class Generator {
 		return builder.toString();
 	}
 
-	private List<String> getAddress() {
+	public List<String> getAddress() {
 		List<String> list = new ArrayList<String>();
 		int index = RANDOM.nextInt(10);
 		MessageData data = MessageData.getInstance(getContext());
-		if (mType == TagIndex.CONVERSATION) {
-
-		} else if (mType == TagIndex.INBOX) {
+		if (mType == TagIndex.INBOX) {
 			Long address = Long.parseLong(data.getRecipient(index))
 					+ mGenerated;
 			list.add(Long.toString(address));
@@ -173,4 +153,37 @@ public class Generator {
 	public static int getPosition() {
 		return sPosition;
 	}
+
+	public ContentValues getSms(String address) {
+		ContentValues values = initContentValue(address);
+		long now = System.currentTimeMillis();
+		values.put("date", now);
+		values.put("read", 0);
+		values.put("seen", 0);
+		values.put("reply_path_present", 0);
+		values.put("service_center", "000000000000");
+		values.put("body", getBody());
+		if(!values.containsKey(Sms.TYPE)){
+			values.put(Sms.TYPE, mType == 0?  RANDOM.nextInt(2) + 1 : mType);
+		}
+		Log.v(TAG, "mTag = " + values.getAsString(Sms.TYPE));
+		return values;
+	}
+	
+	private ContentValues initContentValue(String address){
+		ContentValues values = new ContentValues();
+		if(TextUtils.isEmpty(address)){
+			values.put("address", TextUtils.join(",", getAddress().toArray()));
+		}else{
+			values.put("address",address);
+		}
+		Long threadId = values.getAsLong(Sms.THREAD_ID);
+		address = values.getAsString(Sms.ADDRESS);
+		if (((threadId == null) || (threadId == 0)) && (address != null)) {
+			threadId = Threads.getOrCreateThreadId(getContext(), address);
+			values.put(Sms.THREAD_ID, threadId);
+		}
+		return values;
+	}
+
 }
