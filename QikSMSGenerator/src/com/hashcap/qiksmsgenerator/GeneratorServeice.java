@@ -27,7 +27,6 @@ public class GeneratorServeice extends Service {
 	private boolean mIsCanceled = false;
 	private boolean mStatus = false;
 	private final IBinder mBinder = new GeneratorBinder();
-	private Handler mHandler = new Handler();
 	private OnGeneratorProgressUpdateListener mGeneratorProgressUpdateListener;
 
 	/**
@@ -199,7 +198,6 @@ public class GeneratorServeice extends Service {
 	}
 
 	public boolean getStatus() {
-		// TODO Auto-generated method stub
 		return mStatus;
 	}
 }

@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -90,7 +92,8 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
+		getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		super.onResume();
 	}
 
@@ -106,8 +109,8 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 	protected void onStop() {
 		mGeneratorServeice.unregisterGeneratorProgressUpdateListener();
 		unbindService(mServiceConnection);
-		if(mGeneratorServeice.getStatus()){
-			
+		if (mGeneratorServeice.getStatus()) {
+
 		}
 		super.onStop();
 	}
@@ -187,7 +190,8 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 			} catch (MaxGeneratorException e) {
 				Toast.makeText(
 						this,
-						"Maximum " + Generator.MAX_GENERATOR
+						"Maximum "
+								+ Generator.MAX_GENERATOR
 								+ " generator process can be execute at a time.",
 						Toast.LENGTH_SHORT).show();
 				Log.e(TAG, "Error " + e);
@@ -315,7 +319,7 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 			mProgressBar.setProgress(0);
 			mTextViewProgress.setText("");
 			mLinearLayoutProgressBar.setVisibility(View.GONE);
-			
+
 		}
 	};
 
