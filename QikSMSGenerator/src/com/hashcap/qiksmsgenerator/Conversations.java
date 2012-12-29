@@ -104,6 +104,19 @@ public class Conversations {
 	public Generator getGenerator() {
 		ConversationsGenerator generator = new ConversationsGenerator(mContext,
 				TagIndex.CONVERSATION);
+		String conversations = mEditTextConversations.getText().toString();
+		String messages = mEditTextMessages.getText().toString();
+		if (TextUtils.isEmpty(conversations)) {
+			mDataSettings.setConversations(0);
+		} else {
+			mDataSettings.setConversations(Integer.parseInt(conversations));
+		}
+		if (TextUtils.isEmpty(messages)) {
+			mDataSettings.setMessages(0);
+		} else {
+			mDataSettings.setMessages(Integer.parseInt(messages));
+		}
+
 		generator.setDataSettings(mDataSettings);
 
 		return generator;

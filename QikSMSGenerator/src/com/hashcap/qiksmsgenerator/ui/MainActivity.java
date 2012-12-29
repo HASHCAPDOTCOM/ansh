@@ -15,11 +15,15 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hashcap.qiksmsgenerator.Conversations;
@@ -36,13 +40,15 @@ import com.hashcap.qiksmsgenerator.support.MaxGeneratorException;
 import com.hashcap.qiksmsgenerator.support.OnGeneratorProgressUpdateListener;
 import com.hashcap.qiksmsgenerator.support.OnGeneratorStartListener;
 
-public class MainActivity extends Activity implements OnGeneratorStartListener,
-		OnGeneratorProgressUpdateListener {
+public class MainActivity extends Activity implements OnGeneratorStartListener {
 	private static final String TAG = "MainActivity";
 	private RadioButton mRadioButtonCoversations;
 	private RadioButton mRadioButtonMessageBox;
 	private SharedPreferences mPreferences;
 	private MessageBoxList mMessageBoxList;
+	private LinearLayout mLinearLayoutProgressBar;
+	private ProgressBar mProgressBar;
+	private TextView mTextViewProgress;
 
 	private boolean mBound;
 	private GeneratorServeice mGeneratorServeice;
@@ -51,6 +57,10 @@ public class MainActivity extends Activity implements OnGeneratorStartListener,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		mTextViewProgress = (TextView) findViewById(R.id.textView_progress);
+		mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+		mLinearLayoutProgressBar = (LinearLayout) findViewById(R.id.linearLayout_progress);
+		mLinearLayoutProgressBar.setVisibility(View.GONE);
 
 		initViews();
 
@@ -166,13 +176,16 @@ public class MainActivity extends Activity implements OnGeneratorStartListener,
 
 	@Override
 	public void onGeneratorStart(Generator generator) {
-		if (!mBound) {
+		if (mBound) {
 			try {
 				mGeneratorServeice.add(generator);
 			} catch (MaxGeneratorException e) {
-				Toast.makeText(this, "Maximum " + Generator.MAX_GENERATOR
-						+ "Can be execute at a time.", Toast.LENGTH_SHORT).show();
-				Log.e(TAG, "Error "+ e);
+				Toast.makeText(
+						this,
+						"Maximum " + Generator.MAX_GENERATOR
+								+ " generator process can be execute at a time.",
+						Toast.LENGTH_SHORT).show();
+				Log.e(TAG, "Error " + e);
 			}
 		}
 	}
@@ -184,6 +197,8 @@ public class MainActivity extends Activity implements OnGeneratorStartListener,
 			GeneratorBinder binder = (GeneratorBinder) service;
 			mGeneratorServeice = binder.getService();
 			mBound = true;
+			mGeneratorServeice
+					.setOnGeneratorProgressUpdateListener(mOnGeneratorProgressUpdateListener);
 		}
 
 		@Override
@@ -278,10 +293,16 @@ public class MainActivity extends Activity implements OnGeneratorStartListener,
 
 	}
 
-	@Override
-	public void onGeneratorProgressUpdate(int total, int count) {
-		// TODO Auto-generated method stub
+	private OnGeneratorProgressUpdateListener mOnGeneratorProgressUpdateListener = new OnGeneratorProgressUpdateListener() {
 
-	}
+		@Override
+		public void onGeneratorProgressUpdate(int total, int count) {
+			mLinearLayoutProgressBar.setVisibility(View.VISIBLE);
+			mProgressBar.setMax(total);
+			mProgressBar.setProgress(count);
+			mTextViewProgress.setText(count + " / " + total);
+
+		}
+	};
 
 }

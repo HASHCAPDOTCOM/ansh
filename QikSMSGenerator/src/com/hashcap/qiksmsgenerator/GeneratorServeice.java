@@ -11,11 +11,13 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Telephony.Sms;
+import android.util.MonthDisplayHelper;
 
 import com.hashcap.qiksmsgenerator.GeneratorUtils.TagIndex;
 import com.hashcap.qiksmsgenerator.support.ConversationsGenerator;
 import com.hashcap.qiksmsgenerator.support.Generator;
 import com.hashcap.qiksmsgenerator.support.MaxGeneratorException;
+import com.hashcap.qiksmsgenerator.support.OnGeneratorProgressUpdateListener;
 
 public class GeneratorServeice extends Service {
 	private static final String TAG = "GeneratorServeice";
@@ -26,6 +28,7 @@ public class GeneratorServeice extends Service {
 
 	private final IBinder mBinder = new GeneratorBinder();
 	private Handler mHandler = new Handler();
+	private OnGeneratorProgressUpdateListener mGeneratorProgressUpdateListener;
 
 	/**
 	 * Class used for the client Binder. Because we know this service always
@@ -71,6 +74,8 @@ public class GeneratorServeice extends Service {
 					mGenerator = mGenerators.poll();
 					if (mGenerator != null) {
 						generateMessages();
+					}else{
+						resetGenerator();
 					}
 
 				}
@@ -78,6 +83,11 @@ public class GeneratorServeice extends Service {
 
 		});
 
+	}
+
+	protected void resetGenerator() {
+		Generator.sTotal = 0;
+		Generator.sCount = 0;
 	}
 
 	private void generateMessages() {
@@ -92,7 +102,7 @@ public class GeneratorServeice extends Service {
 
 				@Override
 				protected void onPostExecute(Integer result) {
-
+					mGenerator.setGenerated(0);
 					if (mGenerator.getDataSettings().getMessages() == result) {
 						executeNextGenerator();
 					}
@@ -107,7 +117,11 @@ public class GeneratorServeice extends Service {
 
 				@Override
 				protected void onProgressUpdate(Integer... values) {
-					// TODO Auto-generated method stub
+					if (mGeneratorProgressUpdateListener != null) {
+						mGeneratorProgressUpdateListener
+								.onGeneratorProgressUpdate(Generator.sTotal,
+										Generator.sCount);
+					}
 					super.onProgressUpdate(values);
 				}
 
@@ -128,8 +142,8 @@ public class GeneratorServeice extends Service {
 								Uri uri = getContentResolver().insert(
 										Sms.CONTENT_URI, values);
 								if (uri != null) {
-									mGenerator.setGenerated(1);
-									publishProgress(1);
+									mGenerator.increment();
+									publishProgress(0);
 								}
 							}
 
@@ -143,6 +157,13 @@ public class GeneratorServeice extends Service {
 	}
 
 	protected void executeNextGenerator() {
+		mGenerator = null;
 		notifyGeneratorToExecute();
+	}
+
+	public void setOnGeneratorProgressUpdateListener(
+			OnGeneratorProgressUpdateListener onGeneratorProgressUpdateListener) {
+		mGeneratorProgressUpdateListener = onGeneratorProgressUpdateListener;
+
 	}
 }

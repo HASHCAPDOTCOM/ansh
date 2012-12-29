@@ -26,7 +26,7 @@
         <item>1234567890</item>
         <item>9876543210</item>
     </string-array>
-     <string-array name="recipients">
+    <string-array name="recipients">
         <item>15555215554</item>
         <item>15555215556</item>
         <item>15555215558</item>

@@ -53,8 +53,11 @@ public class Generator {
 	}
 
 	public void setGenerated(int generated) {
-		this.mGenerated += generated;
-		Generator.sCount += generated;
+		this.mGenerated = generated;
+	}
+	public void increment() {
+		this.mGenerated ++;
+		Generator.sCount++;
 	}
 
 	public Uri getUri() {
@@ -93,7 +96,7 @@ public class Generator {
 	public ContentValues getSms() {
 		ContentValues values = new ContentValues();
 		values.put("address",
-				TextUtils.join(",", ((String[]) getAddress().toArray())));
+				TextUtils.join(",", getAddress().toArray()));
 		long now = System.currentTimeMillis();
 
 		values.put("date", now);
@@ -119,19 +122,19 @@ public class Generator {
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < index; i++) {
 			if(dataSettings.isText()){
-				builder.append(data.getText(i));
+				builder.append(" " + data.getText(i));
 			}
 			if(dataSettings.isEmail()){
-				builder.append(data.getEmailAddress(i));
+				builder.append(" " + data.getEmailAddress(i));
 			}
 			if(dataSettings.isSmiley()){
-				builder.append(data.getSmiley());
+				builder.append(" " + data.getSmiley());
 			}
 			if(dataSettings.isPhone()){
 				builder.append(data.getPhoneNumber(i));
 			}
 			if(dataSettings.isWeb()){
-				builder.append(data.getWebAddress(i));
+				builder.append(" " + data.getWebAddress(i));
 			}
 		}
 		return builder.toString();

@@ -139,7 +139,12 @@ public class MessageBox {
 
 	public Generator getGenerator(
 			OnGeneratorStartListener onGeneratorStartListener) {
-
+		String messages = mEditText.getText().toString();
+		if (TextUtils.isEmpty(messages)) {
+			mDataSettings.setMessages(0);
+		} else {
+			mDataSettings.setMessages(Integer.parseInt(messages));
+		}
 		Generator generator = new Generator(mContext, mTag);
 		generator.setOnGeneratorStartListener(onGeneratorStartListener);
 		generator.setDataSettings(mDataSettings);
