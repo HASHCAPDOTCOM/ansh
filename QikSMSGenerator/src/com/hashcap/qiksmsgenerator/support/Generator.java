@@ -22,7 +22,7 @@ import com.hashcap.qiksmsgenerator.MessageData;
 public class Generator {
 	public static final int MAX_GENERATOR = 5;
 	public static int sTotal = 0;
-	public static int sCount = 0;
+	public static int sPosition = 0;
 	private OnGeneratorStartListener mGeneratorStartListener;
 	private Uri mUri;
 	private int mType;
@@ -55,9 +55,10 @@ public class Generator {
 	public void setGenerated(int generated) {
 		this.mGenerated = generated;
 	}
+
 	public void increment() {
-		this.mGenerated ++;
-		Generator.sCount++;
+		this.mGenerated++;
+		Generator.sPosition++;
 	}
 
 	public Uri getUri() {
@@ -95,8 +96,7 @@ public class Generator {
 
 	public ContentValues getSms() {
 		ContentValues values = new ContentValues();
-		values.put("address",
-				TextUtils.join(",", getAddress().toArray()));
+		values.put("address", TextUtils.join(",", getAddress().toArray()));
 		long now = System.currentTimeMillis();
 
 		values.put("date", now);
@@ -121,19 +121,19 @@ public class Generator {
 		DataSettings dataSettings = getDataSettings();
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < index; i++) {
-			if(dataSettings.isText()){
+			if (dataSettings.isText()) {
 				builder.append(" " + data.getText(i));
 			}
-			if(dataSettings.isEmail()){
+			if (dataSettings.isEmail()) {
 				builder.append(" " + data.getEmailAddress(i));
 			}
-			if(dataSettings.isSmiley()){
+			if (dataSettings.isSmiley()) {
 				builder.append(" " + data.getSmiley());
 			}
-			if(dataSettings.isPhone()){
+			if (dataSettings.isPhone()) {
 				builder.append(data.getPhoneNumber(i));
 			}
-			if(dataSettings.isWeb()){
+			if (dataSettings.isWeb()) {
 				builder.append(" " + data.getWebAddress(i));
 			}
 		}
@@ -166,4 +166,11 @@ public class Generator {
 		return list;
 	}
 
+	public static int getTotal() {
+		return sTotal;
+	}
+
+	public static int getPosition() {
+		return sPosition;
+	}
 }

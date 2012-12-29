@@ -47,6 +47,7 @@ public class MessageBoxList {
 	}
 
 	public void ensureGenerator(OnGeneratorStartListener onGeneratorStartListener) {
+		mGenerators.clear();
 		for(MessageBox messageBox : mMessageBoxs){
 			if(messageBox.isChecked()){
 				mGenerators.add(messageBox.getGenerator(onGeneratorStartListener));

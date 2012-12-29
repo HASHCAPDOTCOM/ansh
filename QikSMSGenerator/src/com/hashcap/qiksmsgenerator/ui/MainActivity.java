@@ -97,13 +97,18 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 	@Override
 	protected void onStart() {
 		Intent intent = new Intent(this, GeneratorServeice.class);
+		startService(intent);
 		bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
 		super.onStart();
 	}
 
 	@Override
 	protected void onStop() {
+		mGeneratorServeice.unregisterGeneratorProgressUpdateListener();
 		unbindService(mServiceConnection);
+		if(mGeneratorServeice.getStatus()){
+			
+		}
 		super.onStop();
 	}
 
@@ -198,7 +203,7 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 			mGeneratorServeice = binder.getService();
 			mBound = true;
 			mGeneratorServeice
-					.setOnGeneratorProgressUpdateListener(mOnGeneratorProgressUpdateListener);
+					.registerGeneratorProgressUpdateListener(mOnGeneratorProgressUpdateListener);
 		}
 
 		@Override
@@ -302,6 +307,15 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 			mProgressBar.setProgress(count);
 			mTextViewProgress.setText(count + " / " + total);
 
+		}
+
+		@Override
+		public void onGeneratorProcessEnd() {
+			mProgressBar.setMax(0);
+			mProgressBar.setProgress(0);
+			mTextViewProgress.setText("");
+			mLinearLayoutProgressBar.setVisibility(View.GONE);
+			
 		}
 	};
 

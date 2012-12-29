@@ -11,7 +11,7 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Telephony.Sms;
-import android.util.MonthDisplayHelper;
+import android.widget.Toast;
 
 import com.hashcap.qiksmsgenerator.GeneratorUtils.TagIndex;
 import com.hashcap.qiksmsgenerator.support.ConversationsGenerator;
@@ -25,7 +25,7 @@ public class GeneratorServeice extends Service {
 			Generator.MAX_GENERATOR);
 	private Generator mGenerator;
 	private boolean mIsCanceled = false;
-
+	private boolean mStatus = false;
 	private final IBinder mBinder = new GeneratorBinder();
 	private Handler mHandler = new Handler();
 	private OnGeneratorProgressUpdateListener mGeneratorProgressUpdateListener;
@@ -74,7 +74,7 @@ public class GeneratorServeice extends Service {
 					mGenerator = mGenerators.poll();
 					if (mGenerator != null) {
 						generateMessages();
-					}else{
+					} else {
 						resetGenerator();
 					}
 
@@ -87,11 +87,20 @@ public class GeneratorServeice extends Service {
 
 	protected void resetGenerator() {
 		Generator.sTotal = 0;
-		Generator.sCount = 0;
+		Generator.sPosition = 0;
+		mGenerators.clear();
+		mStatus = false;
+		if (mGeneratorProgressUpdateListener != null) {
+			mGeneratorProgressUpdateListener.onGeneratorProcessEnd();
+			Toast.makeText(GeneratorServeice.this,
+					"SMS Generator Sucessfuly Completed.", Toast.LENGTH_SHORT)
+					.show();
+		}
 	}
 
 	private void generateMessages() {
 		if (mGenerator != null) {
+			mStatus = true;
 			new AsyncTask<Generator, Integer, Integer>() {
 
 				@Override
@@ -102,10 +111,14 @@ public class GeneratorServeice extends Service {
 
 				@Override
 				protected void onPostExecute(Integer result) {
-					mGenerator.setGenerated(0);
-					if (mGenerator.getDataSettings().getMessages() == result) {
-						executeNextGenerator();
+					Generator generator = getGenerator();
+					if (generator != null) {
+						generator.setGenerated(0);
+						if (generator.getDataSettings().getMessages() == result) {
+							executeNextGenerator();
+						}
 					}
+
 					super.onPostExecute(result);
 				}
 
@@ -117,10 +130,12 @@ public class GeneratorServeice extends Service {
 
 				@Override
 				protected void onProgressUpdate(Integer... values) {
-					if (mGeneratorProgressUpdateListener != null) {
-						mGeneratorProgressUpdateListener
-								.onGeneratorProgressUpdate(Generator.sTotal,
-										Generator.sCount);
+					OnGeneratorProgressUpdateListener generatorProgressUpdateListener = getGeneratorProgressUpdateListener();
+					if (generatorProgressUpdateListener != null) {
+						generatorProgressUpdateListener
+								.onGeneratorProgressUpdate(
+										Generator.getTotal(),
+										Generator.getPosition());
 					}
 					super.onProgressUpdate(values);
 				}
@@ -135,14 +150,14 @@ public class GeneratorServeice extends Service {
 						} else {
 							for (int i = 0; i < generator.getDataSettings()
 									.getMessages(); i++) {
-								if (mIsCanceled) {
+								if (isCanceled()) {
 									return i;
 								}
 								ContentValues values = generator.getSms();
 								Uri uri = getContentResolver().insert(
 										Sms.CONTENT_URI, values);
 								if (uri != null) {
-									mGenerator.increment();
+									generator.increment();
 									publishProgress(0);
 								}
 							}
@@ -156,14 +171,35 @@ public class GeneratorServeice extends Service {
 
 	}
 
+	protected Generator getGenerator() {
+		return mGenerator;
+	}
+
 	protected void executeNextGenerator() {
 		mGenerator = null;
 		notifyGeneratorToExecute();
 	}
 
-	public void setOnGeneratorProgressUpdateListener(
+	public void registerGeneratorProgressUpdateListener(
 			OnGeneratorProgressUpdateListener onGeneratorProgressUpdateListener) {
 		mGeneratorProgressUpdateListener = onGeneratorProgressUpdateListener;
 
+	}
+
+	public void unregisterGeneratorProgressUpdateListener() {
+		mGeneratorProgressUpdateListener = null;
+	}
+
+	private OnGeneratorProgressUpdateListener getGeneratorProgressUpdateListener() {
+		return mGeneratorProgressUpdateListener;
+	}
+
+	private boolean isCanceled() {
+		return mIsCanceled;
+	}
+
+	public boolean getStatus() {
+		// TODO Auto-generated method stub
+		return mStatus;
 	}
 }

@@ -5,4 +5,5 @@ package com.hashcap.qiksmsgenerator.support;
 
 public interface OnGeneratorProgressUpdateListener {
 	public void onGeneratorProgressUpdate(int total, int count);
+	public void onGeneratorProcessEnd();
 }
