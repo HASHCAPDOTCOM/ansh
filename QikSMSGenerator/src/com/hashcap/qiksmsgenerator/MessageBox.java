@@ -134,7 +134,8 @@ public class MessageBox {
 	@Override
 	public String toString() {
 
-		return TagName.getName(mTag) + " MessageBox";
+		return " MessageBox = " + TagName.getName(mTag)
+				+ " , mDataSettings = { " + mDataSettings + " }";
 	}
 
 	public Generator getGenerator(

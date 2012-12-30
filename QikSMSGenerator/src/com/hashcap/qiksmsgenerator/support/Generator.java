@@ -96,7 +96,6 @@ public class Generator {
 		mGeneratorStartListener = generatorStartListener;
 	}
 
-	
 	private String getBody() {
 		int index = RANDOM.nextInt(6);
 		MessageData data = MessageData.getInstance(getContext());
@@ -154,6 +153,13 @@ public class Generator {
 		return sPosition;
 	}
 
+	/**
+	 * Initialised all recommended fields for SMS, if address is null or empty
+	 * auto generated address will assign as address.
+	 * 
+	 * @param address
+	 * @return {@link ContentValues}
+	 */
 	public ContentValues getSms(String address) {
 		ContentValues values = initContentValue(address);
 		long now = System.currentTimeMillis();
@@ -163,19 +169,25 @@ public class Generator {
 		values.put("reply_path_present", 0);
 		values.put("service_center", "000000000000");
 		values.put("body", getBody());
-		if(!values.containsKey(Sms.TYPE)){
-			values.put(Sms.TYPE, mType == 0?  RANDOM.nextInt(2) + 1 : mType);
+		if (!values.containsKey(Sms.TYPE)) {
+			values.put(Sms.TYPE, mType == 0 ? RANDOM.nextInt(2) + 1 : mType);
 		}
 		Log.v(TAG, "mTag = " + values.getAsString(Sms.TYPE));
 		return values;
 	}
-	
-	private ContentValues initContentValue(String address){
+
+	/**
+	 * Init message Content Value, its create threads id using address.
+	 * 
+	 * @param address
+	 * @return {@link ContentValues}
+	 */
+	private ContentValues initContentValue(String address) {
 		ContentValues values = new ContentValues();
-		if(TextUtils.isEmpty(address)){
+		if (TextUtils.isEmpty(address)) {
 			values.put("address", TextUtils.join(",", getAddress().toArray()));
-		}else{
-			values.put("address",address);
+		} else {
+			values.put("address", address);
 		}
 		Long threadId = values.getAsLong(Sms.THREAD_ID);
 		address = values.getAsString(Sms.ADDRESS);

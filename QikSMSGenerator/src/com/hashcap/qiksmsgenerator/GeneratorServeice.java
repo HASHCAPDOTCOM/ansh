@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Telephony.Sms;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.hashcap.qiksmsgenerator.GeneratorUtils.TagIndex;
@@ -22,6 +23,7 @@ import com.hashcap.qiksmsgenerator.support.OnGeneratorProgressUpdateListener;
 
 public class GeneratorServeice extends Service {
 	private static final String TAG = "GeneratorServeice";
+	private static final boolean DEBUG = true;
 	ArrayBlockingQueue<Generator> mGenerators = new ArrayBlockingQueue<Generator>(
 			Generator.MAX_GENERATOR);
 	private Generator mGenerator;
@@ -71,6 +73,13 @@ public class GeneratorServeice extends Service {
 			@Override
 			public void run() {
 				if (mGenerator == null) {
+					if (isCanceled()) {
+						if (DEBUG) {
+							Log.v(TAG, "Generator pocess stoped .");
+						}
+						resetGenerator();
+						return;
+					}
 					mGenerator = mGenerators.poll();
 					if (mGenerator != null) {
 						mIsCanceled = false;
@@ -94,7 +103,7 @@ public class GeneratorServeice extends Service {
 			Toast.makeText(GeneratorServeice.this,
 					"Operation aborted by user.", Toast.LENGTH_SHORT).show();
 			mGenerator = null;
-		}else{
+		} else {
 			Toast.makeText(GeneratorServeice.this,
 					"SMS Generator Sucessfuly Completed.", Toast.LENGTH_SHORT)
 					.show();

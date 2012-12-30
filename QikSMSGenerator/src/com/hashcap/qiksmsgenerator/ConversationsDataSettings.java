@@ -47,6 +47,11 @@ public class ConversationsDataSettings extends DataSettings {
 		this.mConversations = conversations;
 	}
 
+	@Override
+	public String toString() {
+		return super.toString() + " mConversations = " + mConversations;
+	}
+
 	public void save(Context context, String name) {
 		super.save(context, name);
 		SharedPreferences preferences = context.getSharedPreferences(name,

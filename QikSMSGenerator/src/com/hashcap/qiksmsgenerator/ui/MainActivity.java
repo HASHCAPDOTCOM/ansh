@@ -44,6 +44,7 @@ import com.hashcap.qiksmsgenerator.support.OnGeneratorStartListener;
 
 public class MainActivity extends Activity implements OnGeneratorStartListener {
 	private static final String TAG = "MainActivity";
+	private static final boolean DEBUG = true;
 	private RadioButton mRadioButtonCoversations;
 	private RadioButton mRadioButtonMessageBox;
 	private SharedPreferences mPreferences;
@@ -176,7 +177,7 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 			break;
 		}
 		case R.id.menu_stop: {
-			if(mBound){
+			if (mBound) {
 				mGeneratorServeice.cancel();
 			}
 		}
@@ -212,6 +213,7 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 			mBound = true;
 			mGeneratorServeice
 					.registerGeneratorProgressUpdateListener(mOnGeneratorProgressUpdateListener);
+
 		}
 
 		@Override
@@ -314,6 +316,10 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 			mProgressBar.setMax(total);
 			mProgressBar.setProgress(count);
 			mTextViewProgress.setText(count + " / " + total);
+			if (DEBUG) {
+				Log.v(TAG, "Progress updates... " + " count = " + count
+						+ ", total = " + total);
+			}
 
 		}
 
@@ -323,7 +329,9 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 			mProgressBar.setProgress(0);
 			mTextViewProgress.setText("");
 			mLinearLayoutProgressBar.setVisibility(View.GONE);
-
+			if (DEBUG) {
+				Log.v(TAG, "Generator pocess stoped .");
+			}
 		}
 	};
 

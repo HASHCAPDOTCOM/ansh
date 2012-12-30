@@ -110,6 +110,15 @@ public class DataSettings implements Parcelable {
 	}
 
 	@Override
+	public String toString() {
+
+		return " mMessages = " + mMessages + " mSingleRecipient = "
+				+ mSingleRecipient + " mText = " + mText + " mPhone = "
+				+ mPhone + " mEmail = " + mEmail + " mWeb = " + mWeb
+				+ " mSmiley = " + mSmiley;
+	}
+
+	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
 		return 0;
