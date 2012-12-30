@@ -7,8 +7,10 @@ package com.hashcap.qiksmsgenerator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
@@ -21,6 +23,7 @@ import com.hashcap.qiksmsgenerator.GeneratorUtils.TagName;
 import com.hashcap.qiksmsgenerator.support.Generator;
 import com.hashcap.qiksmsgenerator.support.InputFilterMinMax;
 import com.hashcap.qiksmsgenerator.support.OnGeneratorStartListener;
+import com.hashcap.qiksmsgenerator.support.OnGeneratorStatusChangedListener;
 import com.hashcap.qiksmsgenerator.ui.DataSettingsActivity;
 import com.hashcap.qiksmsgenerator.ui.MainActivity;
 
@@ -51,12 +54,51 @@ public class MessageBox {
 		mImageViewSettings = imageView;
 		mTag = tag;
 		mDataSettings = new DataSettings(mContext, TagName.getName(mTag));
+
 		mPreferences = mContext.getSharedPreferences("GEN_DATA",
 				Context.MODE_PRIVATE);
+
+		mEditText.setText(mDataSettings.getMessages() > 0 ? mDataSettings
+				.getMessages() + "" : "");
 
 		mEditText.setFilters(new InputFilter[] { new InputFilterMinMax(
 				mContext, "0", "5000") });
 
+		mEditText.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+
+				String messages = s.toString();
+				if (TextUtils.isEmpty(messages)) {
+					mDataSettings.setMessages(0);
+				} else {
+					mDataSettings.setMessages(Integer.parseInt(messages));
+				}
+				final OnGeneratorStatusChangedListener activeListener = Generator
+						.getGeneratorActiveListener();
+				if (activeListener != null) {
+					mEditText.getHandler().post(new Runnable() {
+						@Override
+						public void run() {
+							activeListener.onStartStatusChanged();
+						}
+					});
+
+				}
+
+			}
+		});
 		boolean checked = mPreferences.getBoolean(TagName.getName(mTag), false);
 		if (mCheckBox != null) {
 			mCheckBox.setChecked(checked);
@@ -98,6 +140,17 @@ public class MessageBox {
 				boolean isChecked) {
 			mEditText.setEnabled(isChecked);
 			mImageViewSettings.setEnabled(isChecked);
+			final OnGeneratorStatusChangedListener activeListener = Generator
+					.getGeneratorActiveListener();
+			if (activeListener != null) {
+				buttonView.getHandler().post(new Runnable() {
+					@Override
+					public void run() {
+						activeListener.onStartStatusChanged();
+					}
+				});
+
+			}
 		}
 	};
 
@@ -135,17 +188,11 @@ public class MessageBox {
 	public String toString() {
 
 		return " MessageBox = " + TagName.getName(mTag)
-				+ " , mDataSettings = { " + mDataSettings + " }";
+				+ " , mDataSettings = [ " + mDataSettings + " ]";
 	}
 
 	public Generator getGenerator(
 			OnGeneratorStartListener onGeneratorStartListener) {
-		String messages = mEditText.getText().toString();
-		if (TextUtils.isEmpty(messages)) {
-			mDataSettings.setMessages(0);
-		} else {
-			mDataSettings.setMessages(Integer.parseInt(messages));
-		}
 		Generator generator = new Generator(mContext, mTag);
 		generator.setOnGeneratorStartListener(onGeneratorStartListener);
 		generator.setDataSettings(mDataSettings);
@@ -154,6 +201,10 @@ public class MessageBox {
 
 	public boolean isChecked() {
 		return mCheckBox.isChecked();
+	}
+
+	public int getMessages() {
+		return mDataSettings.getMessages();
 	}
 
 }

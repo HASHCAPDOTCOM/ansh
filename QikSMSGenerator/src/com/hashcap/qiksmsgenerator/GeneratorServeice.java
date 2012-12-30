@@ -20,6 +20,7 @@ import com.hashcap.qiksmsgenerator.support.ConversationsGenerator;
 import com.hashcap.qiksmsgenerator.support.Generator;
 import com.hashcap.qiksmsgenerator.support.MaxGeneratorException;
 import com.hashcap.qiksmsgenerator.support.OnGeneratorProgressUpdateListener;
+import com.hashcap.qiksmsgenerator.support.OnGeneratorStatusChangedListener;
 
 public class GeneratorServeice extends Service {
 	private static final String TAG = "GeneratorServeice";
@@ -48,7 +49,7 @@ public class GeneratorServeice extends Service {
 	}
 
 	public void add(Generator generator) throws MaxGeneratorException {
-		if (mGenerators.size() >= Generator.MAX_GENERATOR) {
+		if (mGenerators.size() > Generator.MAX_GENERATOR) {
 			throw new MaxGeneratorException("Maximum "
 					+ Generator.MAX_GENERATOR
 					+ " Generator object can execute.");
@@ -84,6 +85,17 @@ public class GeneratorServeice extends Service {
 					if (mGenerator != null) {
 						mIsCanceled = false;
 						generateMessages();
+						final OnGeneratorStatusChangedListener activeListener = Generator
+								.getGeneratorActiveListener();
+						if (activeListener != null) {
+							new Handler().post(new Runnable() {
+								@Override
+								public void run() {
+									activeListener.onStopStatusChnaged(true);
+								}
+							});
+
+						}
 					} else {
 						resetGenerator();
 					}
@@ -109,13 +121,27 @@ public class GeneratorServeice extends Service {
 					.show();
 		}
 		mStatus = false;
+		mIsCanceled = false;
 		if (mGeneratorProgressUpdateListener != null) {
 			mGeneratorProgressUpdateListener.onGeneratorProcessEnd();
+		}
+
+		final OnGeneratorStatusChangedListener activeListener = Generator
+				.getGeneratorActiveListener();
+		if (activeListener != null) {
+			new Handler().post(new Runnable() {
+				@Override
+				public void run() {
+					activeListener.onStopStatusChnaged(false);
+				}
+			});
+
 		}
 	}
 
 	private void generateMessages() {
 		if (mGenerator != null) {
+
 			mStatus = true;
 			new AsyncTask<Generator, Integer, Integer>() {
 
@@ -130,11 +156,7 @@ public class GeneratorServeice extends Service {
 					Generator generator = getGenerator();
 					if (generator != null) {
 						generator.setGenerated(0);
-						if (generator.getDataSettings().getMessages() == result) {
-							executeNextGenerator();
-						} else {
-							resetGenerator();
-						}
+						executeNextGenerator();
 					}
 
 					super.onPostExecute(result);
@@ -228,6 +250,13 @@ public class GeneratorServeice extends Service {
 	}
 
 	protected void executeNextGenerator() {
+		if (isCanceled()) {
+			if (DEBUG) {
+				Log.v(TAG, "Generator pocess stoped .");
+			}
+			resetGenerator();
+			return;
+		}
 		mGenerator = null;
 		notifyGeneratorToExecute();
 	}

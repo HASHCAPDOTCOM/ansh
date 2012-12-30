@@ -46,24 +46,36 @@ public class MessageBoxList {
 
 	}
 
-	public void ensureGenerator(OnGeneratorStartListener onGeneratorStartListener) {
+	public void ensureGenerator(
+			OnGeneratorStartListener onGeneratorStartListener) {
 		mGenerators.clear();
-		for(MessageBox messageBox : mMessageBoxs){
-			if(messageBox.isChecked()){
-				mGenerators.add(messageBox.getGenerator(onGeneratorStartListener));
+		for (MessageBox messageBox : mMessageBoxs) {
+			if (messageBox.isChecked()) {
+				mGenerators.add(messageBox
+						.getGenerator(onGeneratorStartListener));
 			}
 		}
 	}
 
 	public void generate() {
-			if(mGenerators != null && mGenerators.size() > 0){
-				for(Generator generator : mGenerators){
-					generator.start();
-				}
-				if(mGeneratorStartListener != null){
-					
-				}
+		if (mGenerators != null && mGenerators.size() > 0) {
+			for (Generator generator : mGenerators) {
+				generator.start();
 			}
-		
+			if (mGeneratorStartListener != null) {
+
+			}
+		}
+
+	}
+
+	public boolean canActivateGenerator() {
+		for (MessageBox messageBox : mMessageBoxs) {
+
+			if (messageBox.isChecked() && messageBox.getMessages() > 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

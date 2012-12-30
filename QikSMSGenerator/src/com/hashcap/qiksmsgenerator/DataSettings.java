@@ -8,9 +8,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 public class DataSettings implements Parcelable {
-
+	private static final String TAG = "DataSettings";
+	private static final boolean DEBUG = true;
 	private int mMessages;
 	private boolean mSingleRecipient;
 	private boolean mText;
@@ -23,7 +25,7 @@ public class DataSettings implements Parcelable {
 
 	public DataSettings(Context context, String name) {
 		mPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);
-		mMessages = mPreferences.getInt("messages", 1);
+		mMessages = mPreferences.getInt("messages", 0);
 		mSingleRecipient = mPreferences.getBoolean("single_recipient", true);
 		mText = mPreferences.getBoolean("text", true);
 		mPhone = mPreferences.getBoolean("phone", true);
@@ -40,6 +42,9 @@ public class DataSettings implements Parcelable {
 		mEmail = source.readByte() == 1;
 		mWeb = source.readByte() == 1;
 		mSmiley = source.readByte() == 1;
+		if (DEBUG) {
+			Log.v(TAG, "Read From Parcel : mDataSettings = " + this);
+		}
 	}
 
 	@Override
@@ -51,6 +56,10 @@ public class DataSettings implements Parcelable {
 		dest.writeByte((byte) (mEmail ? 1 : 0));
 		dest.writeByte((byte) (mWeb ? 1 : 0));
 		dest.writeByte((byte) (mSmiley ? 1 : 0));
+
+		if (DEBUG) {
+			Log.v(TAG, "Write to Parcel : mDataSettings = " + this);
+		}
 	}
 
 	public boolean isText() {
@@ -112,10 +121,10 @@ public class DataSettings implements Parcelable {
 	@Override
 	public String toString() {
 
-		return " mMessages = " + mMessages + " mSingleRecipient = "
+		return "[ mMessages = " + mMessages + " mSingleRecipient = "
 				+ mSingleRecipient + " mText = " + mText + " mPhone = "
 				+ mPhone + " mEmail = " + mEmail + " mWeb = " + mWeb
-				+ " mSmiley = " + mSmiley;
+				+ " mSmiley = " + mSmiley + "]";
 	}
 
 	@Override
@@ -148,7 +157,9 @@ public class DataSettings implements Parcelable {
 		editor.putBoolean("web", mWeb);
 		editor.putBoolean("smiley", mSmiley);
 		editor.apply();
-
+		if (DEBUG) {
+			Log.v(TAG, "Save Sucessfuly : mDataSettings = " + this);
+		}
 	}
 
 }

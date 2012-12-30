@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 public class ConversationsDataSettings extends DataSettings {
+	private static final String TAG = "ConversationsDataSettings";
+	private static final boolean DEBUG = true;
 	private int mConversations;
 
 	public ConversationsDataSettings(Parcel source) {
@@ -17,7 +20,7 @@ public class ConversationsDataSettings extends DataSettings {
 		super(context, name);
 		SharedPreferences preferences = context.getSharedPreferences(name,
 				Context.MODE_PRIVATE);
-		mConversations = preferences.getInt("conversations", 1);
+		mConversations = preferences.getInt("conversations", 0);
 	}
 
 	@Override
@@ -49,7 +52,8 @@ public class ConversationsDataSettings extends DataSettings {
 
 	@Override
 	public String toString() {
-		return super.toString() + " mConversations = " + mConversations;
+		return "[ " + super.toString() + " mConversations = " + mConversations
+				+ " ]";
 	}
 
 	public void save(Context context, String name) {
@@ -59,7 +63,9 @@ public class ConversationsDataSettings extends DataSettings {
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putInt("conversations", mConversations);
 		editor.apply();
-
+		if (DEBUG) {
+			Log.v(TAG, "Save Sucessfuly : mDataSettings = " + this);
+		}
 	}
 
 }

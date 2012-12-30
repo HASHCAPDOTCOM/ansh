@@ -32,6 +32,7 @@ public class Generator {
 	private DataSettings mDataSettings;
 	private static final Random RANDOM = new Random();
 	private Context mContext;
+	private static OnGeneratorStatusChangedListener mGeneratorActiveListener;
 
 	public Generator(Context context, int type) {
 		mContext = context;
@@ -81,8 +82,8 @@ public class Generator {
 
 	@Override
 	public String toString() {
-		return "Generator = " + TagName.getName(mType) + "mMessages =  "
-				+ getDataSettings().getMessages() + "mUri = " + mUri;
+		return " mType = " + mType + "[" + TagName.getName(mType) + "]"
+				+ " ,  mDataSettings =  " + getDataSettings();
 	}
 
 	public void start() {
@@ -98,6 +99,7 @@ public class Generator {
 
 	private String getBody() {
 		int index = RANDOM.nextInt(6);
+
 		MessageData data = MessageData.getInstance(getContext());
 		DataSettings dataSettings = getDataSettings();
 		StringBuilder builder = new StringBuilder();
@@ -196,6 +198,20 @@ public class Generator {
 			values.put(Sms.THREAD_ID, threadId);
 		}
 		return values;
+	}
+
+	public static void registerGeneratorActiveListener(
+			OnGeneratorStatusChangedListener generatorActiveListener) {
+		mGeneratorActiveListener = generatorActiveListener;
+	}
+
+	public static void unregisterGeneratorActiveListener() {
+		mGeneratorActiveListener = null;
+
+	}
+
+	public static OnGeneratorStatusChangedListener getGeneratorActiveListener() {
+		return mGeneratorActiveListener;
 	}
 
 }

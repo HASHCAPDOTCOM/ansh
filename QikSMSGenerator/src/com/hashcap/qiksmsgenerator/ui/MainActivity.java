@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
@@ -39,6 +40,7 @@ import com.hashcap.qiksmsgenerator.MessageBoxList;
 import com.hashcap.qiksmsgenerator.R;
 import com.hashcap.qiksmsgenerator.support.Generator;
 import com.hashcap.qiksmsgenerator.support.MaxGeneratorException;
+import com.hashcap.qiksmsgenerator.support.OnGeneratorStatusChangedListener;
 import com.hashcap.qiksmsgenerator.support.OnGeneratorProgressUpdateListener;
 import com.hashcap.qiksmsgenerator.support.OnGeneratorStartListener;
 
@@ -52,6 +54,8 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 	private LinearLayout mLinearLayoutProgressBar;
 	private ProgressBar mProgressBar;
 	private TextView mTextViewProgress;
+	private boolean mIsStartEnabled = false;
+	private boolean mIsStopEnabled = false;
 
 	private boolean mBound;
 	private GeneratorServeice mGeneratorServeice;
@@ -68,6 +72,7 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 		initViews();
 
 		mPreferences = getSharedPreferences("GEN_DATA", Context.MODE_PRIVATE);
+
 		mRadioButtonCoversations.setChecked(mPreferences.getBoolean(
 				"conversations", false));
 		Conversations conversations = (Conversations) mRadioButtonCoversations
@@ -87,7 +92,7 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
+		Generator.unregisterGeneratorActiveListener();
 		super.onPause();
 	}
 
@@ -95,6 +100,51 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 	protected void onResume() {
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+		Generator
+				.registerGeneratorActiveListener(new OnGeneratorStatusChangedListener() {
+
+					@Override
+					public void onStartStatusChanged() {
+						if (mRadioButtonCoversations.isChecked()) {
+							Conversations conversations = (Conversations) mRadioButtonCoversations
+									.getTag();
+							if (conversations.canActivateGenerator()) {
+								mIsStartEnabled = true;
+							} else {
+								mIsStartEnabled = false;
+							}
+						}
+						if (mRadioButtonMessageBox.isChecked()) {
+							MessageBoxList messageBoxList = (MessageBoxList) mRadioButtonMessageBox
+									.getTag();
+							if (messageBoxList.canActivateGenerator()) {
+								mIsStartEnabled = true;
+							} else {
+								mIsStartEnabled = false;
+							}
+						}
+						invalidateOptionsMenu();
+					}
+
+					@Override
+					public void onStopStatusChnaged(boolean enabled) {
+						mIsStopEnabled = enabled;
+						invalidateOptionsMenu();
+					}
+				});
+
+		final OnGeneratorStatusChangedListener activeListener = Generator
+				.getGeneratorActiveListener();
+		if (activeListener != null) {
+			new Handler().post(new Runnable() {
+				@Override
+				public void run() {
+					activeListener.onStartStatusChanged();
+				}
+			});
+
+		}
 		super.onResume();
 	}
 
@@ -158,6 +208,23 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 	}
 
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (mIsStartEnabled) {
+			menu.findItem(R.id.menu_start).setEnabled(true);
+		} else {
+			menu.findItem(R.id.menu_start).setEnabled(false);
+			menu.findItem(R.id.menu_stop).setEnabled(false);
+		}
+		if (mIsStopEnabled) {
+			menu.findItem(R.id.menu_stop).setEnabled(true);
+		} else {
+			menu.findItem(R.id.menu_stop).setEnabled(false);
+		}
+
+		return true;
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_start: {
@@ -214,11 +281,17 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 			mGeneratorServeice
 					.registerGeneratorProgressUpdateListener(mOnGeneratorProgressUpdateListener);
 
+			if (DEBUG) {
+				Log.v(TAG, "GeneratorService bind sucesspully.");
+			}
 		}
 
 		@Override
 		public void onServiceDisconnected(ComponentName arg0) {
 			mBound = false;
+			if (DEBUG) {
+				Log.v(TAG, "GeneratorService unbind sucesspully.");
+			}
 		}
 	};
 
@@ -278,6 +351,20 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 							boolean isChecked) {
 						if (isChecked) {
 							mRadioButtonMessageBox.setChecked(false);
+							final OnGeneratorStatusChangedListener activeListener = Generator
+									.getGeneratorActiveListener();
+							if (activeListener != null) {
+								mRadioButtonMessageBox.getHandler().post(
+										new Runnable() {
+											@Override
+											public void run() {
+												activeListener
+														.onStartStatusChanged();
+											}
+										});
+
+							}
+
 						}
 						Conversations conversations = (Conversations) mRadioButtonCoversations
 								.getTag();
@@ -295,6 +382,20 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 							boolean isChecked) {
 						if (isChecked) {
 							mRadioButtonCoversations.setChecked(false);
+							final OnGeneratorStatusChangedListener activeListener = Generator
+									.getGeneratorActiveListener();
+							if (activeListener != null) {
+								mRadioButtonCoversations.getHandler().post(
+										new Runnable() {
+											@Override
+											public void run() {
+												activeListener
+														.onStartStatusChanged();
+											}
+										});
+
+							}
+
 						}
 
 						MessageBoxList boxList = (MessageBoxList) mRadioButtonMessageBox
