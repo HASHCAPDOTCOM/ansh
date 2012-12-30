@@ -10,9 +10,14 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.hashcap.qiksmsgenerator.GeneratorUtils.TagIndex;
 import com.hashcap.qiksmsgenerator.GeneratorUtils.TagName;
@@ -46,6 +51,36 @@ public class Conversations {
 						"0", "500") });
 		mEditTextMessages.setFilters(new InputFilter[] { new InputFilterMinMax(
 				mContext, "0", "5000") });
+
+		mEditTextConversations
+				.setOnEditorActionListener(new OnEditorActionListener() {
+					@Override
+					public boolean onEditorAction(TextView v, int actionId,
+							KeyEvent event) {
+						if (actionId == EditorInfo.IME_ACTION_DONE) {
+							InputMethodManager inputMethodManager = (InputMethodManager) mContext
+									.getSystemService(Context.INPUT_METHOD_SERVICE);
+							inputMethodManager.hideSoftInputFromWindow(
+									mEditTextConversations.getWindowToken(), 0);
+						}
+						return false;
+					}
+				});
+
+		mEditTextMessages
+				.setOnEditorActionListener(new OnEditorActionListener() {
+					@Override
+					public boolean onEditorAction(TextView v, int actionId,
+							KeyEvent event) {
+						if (actionId == EditorInfo.IME_ACTION_DONE) {
+							InputMethodManager inputMethodManager = (InputMethodManager) mContext
+									.getSystemService(Context.INPUT_METHOD_SERVICE);
+							inputMethodManager.hideSoftInputFromWindow(
+									mEditTextMessages.getWindowToken(), 0);
+						}
+						return false;
+					}
+				});
 		mEditTextConversations.addTextChangedListener(new TextWatcher() {
 
 			@Override

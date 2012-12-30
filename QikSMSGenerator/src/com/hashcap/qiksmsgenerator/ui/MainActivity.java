@@ -228,6 +228,8 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_start: {
+			getWindow().setSoftInputMode(
+					WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 			if (mRadioButtonCoversations.isChecked()) {
 				Conversations conversations = (Conversations) mRadioButtonCoversations
 						.getTag();
