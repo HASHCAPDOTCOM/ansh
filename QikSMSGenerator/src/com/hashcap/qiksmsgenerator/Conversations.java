@@ -165,7 +165,7 @@ public class Conversations {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mContext, DataSettingsActivity.class);
-				intent.putExtra("TAG", mTag);
+				intent.putExtra("tag", mTag);
 
 				String conversations = mEditTextConversations.getText()
 						.toString();

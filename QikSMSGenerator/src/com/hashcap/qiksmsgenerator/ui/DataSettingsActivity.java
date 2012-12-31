@@ -6,6 +6,7 @@ package com.hashcap.qiksmsgenerator.ui;
 
 import com.hashcap.qiksmsgenerator.DataSettings;
 import com.hashcap.qiksmsgenerator.R;
+import com.hashcap.qiksmsgenerator.GeneratorUtils.TagIndex;
 import com.hashcap.qiksmsgenerator.R.id;
 import com.hashcap.qiksmsgenerator.R.layout;
 
@@ -60,6 +61,7 @@ public class DataSettingsActivity extends Activity {
 		}
 
 		Bundle bundle = intent.getExtras();
+		mTag = bundle.getInt("tag", 0);
 		mDataSettings = (DataSettings) bundle.get("data");
 
 		initData(mDataSettings);
@@ -70,11 +72,19 @@ public class DataSettingsActivity extends Activity {
 		if (dataSettings == null) {
 			return;
 		}
-		if (dataSettings.isSingleRecipient()) {
+		if (mTag == TagIndex.INBOX) {
 			mCheckBoxSingleRecipient.setChecked(true);
+			mCheckBoxMultipleRecipients.setChecked(false);
+			mCheckBoxMultipleRecipients.setEnabled(false);
 		} else {
-			mCheckBoxMultipleRecipients.setChecked(true);
+			mCheckBoxMultipleRecipients.setEnabled(true);
+			if (dataSettings.isSingleRecipient()) {
+				mCheckBoxSingleRecipient.setChecked(true);
+			} else {
+				mCheckBoxMultipleRecipients.setChecked(true);
+			}
 		}
+
 		mCheckBoxText.setChecked(dataSettings.isText());
 		mCheckBoxPhone.setChecked(dataSettings.isPhone());
 		mCheckBoxEmail.setChecked(dataSettings.isEmail());

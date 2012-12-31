@@ -137,7 +137,7 @@ public class MessageBox {
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent(mContext, DataSettingsActivity.class);
-			intent.putExtra("TAG", mTag);
+			intent.putExtra("tag", mTag);
 			String messages = mEditText.getText().toString();
 			if (TextUtils.isEmpty(messages)) {
 				mDataSettings.setMessages(0);
