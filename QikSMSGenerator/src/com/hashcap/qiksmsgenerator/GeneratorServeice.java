@@ -48,13 +48,19 @@ public class GeneratorServeice extends Service {
 		return mBinder;
 	}
 
-	public void add(Generator generator) throws MaxGeneratorException {
-		if (mGenerators.size() > Generator.MAX_GENERATOR) {
+	public void add(Generator generator) throws MaxGeneratorException,
+			Exception {
+		if (mGenerators.size() >= Generator.MAX_GENERATOR) {
 			throw new MaxGeneratorException("Maximum "
 					+ Generator.MAX_GENERATOR
 					+ " Generator object can execute.");
 		}
-		mGenerators.add(generator);
+		try {
+			mGenerators.add(generator);
+		} catch (Exception e) {
+			throw e;
+		}
+
 		if (generator instanceof ConversationsGenerator) {
 			int conversations = ((ConversationsDataSettings) generator
 					.getDataSettings()).getConversations();
@@ -82,6 +88,7 @@ public class GeneratorServeice extends Service {
 						return;
 					}
 					mGenerator = mGenerators.poll();
+					Generator.setGeneratorQueueFull(false);
 					if (mGenerator != null) {
 						mIsCanceled = false;
 						generateMessages();

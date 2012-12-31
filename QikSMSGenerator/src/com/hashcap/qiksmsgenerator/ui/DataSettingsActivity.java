@@ -72,7 +72,7 @@ public class DataSettingsActivity extends Activity {
 		if (dataSettings == null) {
 			return;
 		}
-		if (mTag == TagIndex.INBOX) {
+		if (mTag == TagIndex.INBOX || mTag == TagIndex.CONVERSATION) {
 			mCheckBoxSingleRecipient.setChecked(true);
 			mCheckBoxMultipleRecipients.setChecked(false);
 			mCheckBoxMultipleRecipients.setEnabled(false);

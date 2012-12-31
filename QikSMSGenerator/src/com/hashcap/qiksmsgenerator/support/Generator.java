@@ -33,6 +33,7 @@ public class Generator {
 	private static final Random RANDOM = new Random();
 	private Context mContext;
 	private static OnGeneratorStatusChangedListener mGeneratorActiveListener;
+	private static boolean mIsGeneratorQueueFull;
 
 	public Generator(Context context, int type) {
 		mContext = context;
@@ -103,7 +104,7 @@ public class Generator {
 		MessageData data = MessageData.getInstance(getContext());
 		DataSettings dataSettings = getDataSettings();
 		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < index; i++) {
+		for (int i = 0; i <= index; i++) {
 			if (dataSettings.isText()) {
 				builder.append(" " + data.getText(i));
 			}
@@ -137,6 +138,9 @@ public class Generator {
 						+ mGenerated;
 				list.add(Long.toString(address));
 			} else {
+				if (index < 2) {
+					index = 2;
+				}
 				for (int i = 0; i < index; i++) {
 					Long address = Long.parseLong(data.getRecipient(i))
 							+ mGenerated;
@@ -214,4 +218,11 @@ public class Generator {
 		return mGeneratorActiveListener;
 	}
 
+	synchronized public static boolean isGeneratorQueueFull() {
+		return mIsGeneratorQueueFull;
+	}
+
+	synchronized public static void setGeneratorQueueFull(boolean enabled) {
+		mIsGeneratorQueueFull = enabled;
+	}
 }

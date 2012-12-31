@@ -61,9 +61,9 @@ public class MessageBoxList {
 		if (mGenerators != null && mGenerators.size() > 0) {
 			for (Generator generator : mGenerators) {
 				generator.start();
-			}
-			if (mGeneratorStartListener != null) {
-
+				if(Generator.isGeneratorQueueFull()){
+					return;
+				}
 			}
 		}
 

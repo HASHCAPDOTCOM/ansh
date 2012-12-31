@@ -262,11 +262,16 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 			try {
 				mGeneratorServeice.add(generator);
 			} catch (MaxGeneratorException e) {
+				Generator.setGeneratorQueueFull(true);
 				Toast.makeText(
 						this,
-						"Maximum "
-								+ Generator.MAX_GENERATOR
-								+ " generator process can be execute at a time.",
+						"Max SMS generator queue limit riched!",
+						Toast.LENGTH_SHORT).show();
+				Log.e(TAG, "Error " + e);
+			}catch (Exception e) {
+				Toast.makeText(
+						this,
+						"Max SMS generator queue limit riched!",
 						Toast.LENGTH_SHORT).show();
 				Log.e(TAG, "Error " + e);
 			}
@@ -283,6 +288,19 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 			mGeneratorServeice
 					.registerGeneratorProgressUpdateListener(mOnGeneratorProgressUpdateListener);
 
+			if(mGeneratorServeice.getStatus()){
+				final OnGeneratorStatusChangedListener activeListener = Generator
+						.getGeneratorActiveListener();
+				if (activeListener != null) {
+					new Handler().post(new Runnable() {
+						@Override
+						public void run() {
+							activeListener.onStopStatusChnaged(true);
+						}
+					});
+
+				}
+			}
 			if (DEBUG) {
 				Log.v(TAG, "GeneratorService bind sucesspully.");
 			}
