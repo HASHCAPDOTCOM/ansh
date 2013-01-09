@@ -32,6 +32,6 @@
     <string name="message_email_address">Email address</string>
     <string name="message_web_address">Web Address</string>
     <string name="message_smiley">Smiley</string>
-    <string name="smileyes"> :-) :-( ;-) :-P =-O :-* :O B-) :-$ :-! :-[ O:-) :-\ :\'X :-D o_O \u003c# x-( :-/ :-|</string>
+    <string name="smileyes"> :-) :-( ;-) :-P =-O :-* :O B-) :-$ :-$ :-[ O:-) :-\\ :\'( :-X :-D o_O &lt;3 x-( :-/ :-I</string>
 
 </resources>
