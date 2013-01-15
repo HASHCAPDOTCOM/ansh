@@ -253,9 +253,11 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 			if (mBound) {
 				mGeneratorServeice.cancel();
 			}
+			break;
 		}
 		case R.id.menu_about: {
 			showAboutDialog();
+			break;
 		}
 		default:
 			break;
