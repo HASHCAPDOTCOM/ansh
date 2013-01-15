@@ -137,7 +137,7 @@ public class Generator {
 		String[] recipients = mDataSettings.getRecipients();
 		MessageData data = MessageData.getInstance(getContext());
 		if (mType == FolderIndex.INBOX) {
-			if (recipients.length > 0) {
+			if (recipients != null && recipients.length > 0) {
 				list.add(recipients[0]);
 			} else {
 				Long address = Long.parseLong(data.getRecipient(index))
@@ -146,7 +146,7 @@ public class Generator {
 			}
 
 		} else {
-			if (recipients.length > 0) {
+			if (recipients != null && recipients.length > 0) {
 				list.addAll(Arrays.asList(recipients));
 			} else {
 				if (getDataSettings().isSingleRecipient()) {

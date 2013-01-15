@@ -11,10 +11,18 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
-        android:targetSdkVersion="16" />
-    <uses-permission android:name="android.permission.WRITE_SMS"/>
-    <uses-permission android:name="android.permission.READ_SMS"/>
+        android:minSdkVersion="14"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+
+    <permission
+        android:name="com.hashcap.permission.GENERATE_SMS"
+        android:description="@string/generator_premission_description"
+        android:label="@string/generator_permission_label"
+        android:permissionGroup="com.hashcap.permission"
+        android:protectionLevel="dangerous" />
 
     <application
         android:allowBackup="true"
@@ -30,8 +38,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.DataSettingsActivity"></activity>
-        <service android:name="GeneratorServeice"></service>
+        <activity android:name=".ui.DataSettingsActivity" >
+        </activity>
+
+        <service android:name="GeneratorServeice" >
+        </service>
+
+        <activity
+            android:name=".ui.GeneratorRequestActivity"
+            android:exported="true"
+            android:permission="com.hashcap.permission.GENERATE_SMS"
+            android:theme="@android:style/Theme.DeviceDefault.Dialog" >
+            <intent-filter>
+                <action android:name="com.hshcap.qiksmsgenerator.GENERATE_SMS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
