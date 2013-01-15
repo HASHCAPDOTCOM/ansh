@@ -66,7 +66,7 @@ public class MessageBox {
 				.getMessages() + "" : "");
 
 		mEditText.setFilters(new InputFilter[] { new InputFilterMinMax(
-				mContext, "0", "5000") });
+				mContext, "0", "500") });
 
 		mEditText.setOnEditorActionListener(new OnEditorActionListener() {
 			@Override

@@ -48,7 +48,7 @@ public class Conversations {
 				.setFilters(new InputFilter[] { new InputFilterMinMax(mContext,
 						"0", "500") });
 		mEditTextMessages.setFilters(new InputFilter[] { new InputFilterMinMax(
-				mContext, "0", "5000") });
+				mContext, "0", "500") });
 
 		mEditTextConversations
 				.setOnEditorActionListener(new OnEditorActionListener() {

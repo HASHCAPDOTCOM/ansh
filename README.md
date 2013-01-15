@@ -13,7 +13,7 @@ Features:
 1. For conversation user can push number of conversation and number of messages per conversation.
 2. Inbox can only have single recipient messages with all allowed data type.
 3. Except Inbox all other message boxes can have both Single recipient or multiple recipient message with all allowed data type.
-4. Maximum 5000 messages can be input for each message box at a time.
+4. Maximum 500 messages can be input for each message box at a time.
 5. Progress bar will indicate total messages to be generated.
 6. Can able to abort the SMS generation process at any time.
 7. It is a stable version.
