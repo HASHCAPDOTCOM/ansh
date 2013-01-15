@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class DataSettings implements Parcelable {
 	private static final String TAG = "DataSettings";
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 	private int mMessages;
 	private boolean mSingleRecipient;
 	private boolean mText;
@@ -20,10 +20,16 @@ public class DataSettings implements Parcelable {
 	private boolean mEmail;
 	private boolean mWeb;
 	private boolean mSmiley;
+	private boolean mAutoSave;
+
+	private String[] mRecipients;
+	private String mBody;
+	private long mDate;
 
 	private SharedPreferences mPreferences;
 
 	public DataSettings(Context context, String name) {
+		mAutoSave = true;
 		mPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);
 		mMessages = mPreferences.getInt("messages", 0);
 		mSingleRecipient = mPreferences.getBoolean("single_recipient", true);
@@ -32,6 +38,16 @@ public class DataSettings implements Parcelable {
 		mEmail = mPreferences.getBoolean("email", true);
 		mWeb = mPreferences.getBoolean("web", true);
 		mSmiley = mPreferences.getBoolean("smiley", true);
+	}
+
+	public DataSettings(Context context) {
+		mAutoSave = false;
+
+		mText = true;
+		mPhone = true;
+		mEmail = true;
+		mWeb = true;
+		mSmiley = true;
 	}
 
 	public DataSettings(Parcel source) {
@@ -147,6 +163,9 @@ public class DataSettings implements Parcelable {
 	};
 
 	public void save(Context context, String name) {
+		if (!mAutoSave) {
+			return;
+		}
 		mPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = mPreferences.edit();
 		editor.putInt("messages", mMessages);
@@ -160,6 +179,30 @@ public class DataSettings implements Parcelable {
 		if (DEBUG) {
 			Log.v(TAG, "Save Sucessfuly : mDataSettings = " + this);
 		}
+	}
+
+	public void setRecipients(String[] recipients) {
+		mRecipients = recipients;
+	}
+
+	public void setDate(long date) {
+		mDate = date;
+	}
+
+	public void setBody(String body) {
+		mBody = body;
+	}
+
+	public long getDate() {
+		return mDate;
+	}
+
+	public String[] getRecipients() {
+		return mRecipients;
+	}
+
+	public String getBody() {
+		return mBody;
 	}
 
 }

@@ -8,7 +8,7 @@ import android.util.Log;
 
 public class ConversationsDataSettings extends DataSettings {
 	private static final String TAG = "ConversationsDataSettings";
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 	private int mConversations;
 
 	public ConversationsDataSettings(Parcel source) {

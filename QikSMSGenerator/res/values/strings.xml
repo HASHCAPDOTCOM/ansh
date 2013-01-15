@@ -9,7 +9,7 @@
 
     <string name="app_name">QikSMS Generator</string>
     <string name="settings">Settings</string>
-    <string name="about">About</string>
+    <string name="menu_about">About</string>
     <string name="generate_conversation">Generate Conversation</string>
     <string name="generate_message_for_box">Generate for message box</string>
     <string name="conversations">Conversations</string>
@@ -24,7 +24,7 @@
     <string name="stop">Stop</string>
     <string name="recipients">Recipients</string>
     <string name="single_recipient">Single recipient</string>
-    <string name="multiple_recipients">Multile recipients</string>
+    <string name="multiple_recipients">Multiple recipients</string>
     <string name="message_data">Message data settings</string>
     <string name="message_parts">Message parts</string>
     <string name="message_text">Text</string>
@@ -33,5 +33,9 @@
     <string name="message_web_address">Web Address</string>
     <string name="message_smiley">Smiley</string>
     <string name="smileyes"> :-) :-( ;-) :-P =-O :-* :O B-) :-$ :-$ :-[ O:-) :-\\ :\'( :-X :-D o_O &lt;3 x-( :-/ :-I</string>
+    <string name="generator_premission_description">If other application wants to generate test messages for native messaging application, they must use \"com.hashcap.permission.GENERATE_SMS\" permission.</string>
+    <string name="generator_permission_label">Generator permission</string>
+    <string name="about">    QikSMS Generator is the first SMS generator tool which generates predefined random SMS messages for Conversation, Inbox, Sent Box, Draft, Outbox, Faild Box.It can push multiple language (English, Chinese, Thai, Japanese, Spanish) texts as message body and generates multi-part messages randomly. Now you can enjoy this largest SMS generator for regress testing easily. Source code download link: https://github.com/HASHCAPDOTCOM/ansh.git\n\n\n    How To use?\n-----------------\n\n1. Choose a category (Generate Conversation/Generate for Message box)\n2. Choose any sub-category like Inbox/Sent/Draft/Outbox/Failed. [Optional]\n2. Fill values in Number field of respective category.\n3. Click on setting buttons to select message datatype and back to main screen.\n4. Click on START option menu.\n5. Click on STOP option menu to abort the SMS generator process at any time.</string>
+    <string name="copyright">\u00a9 2013 HASHCAP Pvt Ltd.</string>
 
 </resources>

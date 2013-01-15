@@ -24,8 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.hashcap.qiksmsgenerator.GeneratorUtils.TagName;
-import com.hashcap.qiksmsgenerator.support.Generator;
+import com.hashcap.qiksmsgenerator.GeneratorUtils.FolderName;
 import com.hashcap.qiksmsgenerator.support.InputFilterMinMax;
 import com.hashcap.qiksmsgenerator.support.OnGeneratorStartListener;
 import com.hashcap.qiksmsgenerator.support.OnGeneratorStatusChangedListener;
@@ -58,7 +57,7 @@ public class MessageBox {
 		mEditText = editText;
 		mImageViewSettings = imageView;
 		mTag = tag;
-		mDataSettings = new DataSettings(mContext, TagName.getName(mTag));
+		mDataSettings = new DataSettings(mContext, FolderName.getName(mTag));
 
 		mPreferences = mContext.getSharedPreferences("GEN_DATA",
 				Context.MODE_PRIVATE);
@@ -117,7 +116,7 @@ public class MessageBox {
 
 			}
 		});
-		boolean checked = mPreferences.getBoolean(TagName.getName(mTag), false);
+		boolean checked = mPreferences.getBoolean(FolderName.getName(mTag), false);
 		if (mCheckBox != null) {
 			mCheckBox.setChecked(checked);
 			if (mEditText != null) {
@@ -193,9 +192,9 @@ public class MessageBox {
 
 	private void save() {
 		SharedPreferences.Editor editor = mPreferences.edit();
-		editor.putBoolean(TagName.getName(mTag), mCheckBox.isChecked());
+		editor.putBoolean(FolderName.getName(mTag), mCheckBox.isChecked());
 		editor.apply();
-		mDataSettings.save(mContext, TagName.getName(mTag));
+		mDataSettings.save(mContext, FolderName.getName(mTag));
 	}
 
 	public void setSettingsData(DataSettings dataSettings) {
@@ -205,7 +204,7 @@ public class MessageBox {
 	@Override
 	public String toString() {
 
-		return " MessageBox = " + TagName.getName(mTag)
+		return " MessageBox = " + FolderName.getName(mTag)
 				+ " , mDataSettings = [ " + mDataSettings + " ]";
 	}
 

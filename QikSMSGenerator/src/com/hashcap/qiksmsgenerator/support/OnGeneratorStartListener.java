@@ -3,6 +3,8 @@
  */
 package com.hashcap.qiksmsgenerator.support;
 
+import com.hashcap.qiksmsgenerator.Generator;
+
 public interface OnGeneratorStartListener {
 	public void onGeneratorStart(Generator generator);
 }

@@ -7,7 +7,7 @@ package com.hashcap.qiksmsgenerator;
 import java.util.ArrayList;
 
 public class GeneratorUtils {
-	public static class TagIndex {
+	public static class FolderIndex {
 		public static final int CONVERSATION = 0;
 		public static final int INBOX = 1;
 		public static final int SENT = 2;
@@ -16,7 +16,7 @@ public class GeneratorUtils {
 		public static final int FAILED = 5;
 	}
 
-	public static class TagName {
+	public static class FolderName {
 		public static final String CONVERSATION = "conversation";
 		public static final String INBOX = "inbox";
 		public static final String SENT = "sent";

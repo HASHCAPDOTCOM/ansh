@@ -5,8 +5,11 @@
 package com.hashcap.qiksmsgenerator.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -14,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,14 +35,14 @@ import android.widget.Toast;
 
 import com.hashcap.qiksmsgenerator.Conversations;
 import com.hashcap.qiksmsgenerator.DataSettings;
+import com.hashcap.qiksmsgenerator.Generator;
 import com.hashcap.qiksmsgenerator.GeneratorServeice;
 import com.hashcap.qiksmsgenerator.GeneratorServeice.GeneratorBinder;
 import com.hashcap.qiksmsgenerator.GeneratorUtils;
-import com.hashcap.qiksmsgenerator.GeneratorUtils.TagIndex;
+import com.hashcap.qiksmsgenerator.GeneratorUtils.FolderIndex;
 import com.hashcap.qiksmsgenerator.MessageBox;
 import com.hashcap.qiksmsgenerator.MessageBoxList;
 import com.hashcap.qiksmsgenerator.R;
-import com.hashcap.qiksmsgenerator.support.Generator;
 import com.hashcap.qiksmsgenerator.support.MaxGeneratorException;
 import com.hashcap.qiksmsgenerator.support.OnGeneratorStatusChangedListener;
 import com.hashcap.qiksmsgenerator.support.OnGeneratorProgressUpdateListener;
@@ -46,7 +50,7 @@ import com.hashcap.qiksmsgenerator.support.OnGeneratorStartListener;
 
 public class MainActivity extends Activity implements OnGeneratorStartListener {
 	private static final String TAG = "MainActivity";
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 	private RadioButton mRadioButtonCoversations;
 	private RadioButton mRadioButtonMessageBox;
 	private SharedPreferences mPreferences;
@@ -172,15 +176,15 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 			DataSettings dataSettings = (DataSettings) data.getExtras().get(
 					"data");
 			switch (requestCode) {
-			case TagIndex.CONVERSATION:
+			case FolderIndex.CONVERSATION:
 				((Conversations) mRadioButtonCoversations.getTag())
 						.setSettingsData(dataSettings);
 				break;
-			case TagIndex.INBOX:
-			case TagIndex.SENT:
-			case TagIndex.DRAFT:
-			case TagIndex.OUTBOX:
-			case TagIndex.FAILED:
+			case FolderIndex.INBOX:
+			case FolderIndex.SENT:
+			case FolderIndex.DRAFT:
+			case FolderIndex.OUTBOX:
+			case FolderIndex.FAILED:
 				mMessageBoxList.setSettingsData(requestCode - 1, dataSettings);
 				break;
 			default:
@@ -250,10 +254,30 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 				mGeneratorServeice.cancel();
 			}
 		}
+		case R.id.menu_about: {
+			showAboutDialog();
+		}
 		default:
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void showAboutDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    LayoutInflater inflater = getLayoutInflater();
+	    builder.setTitle("About");
+	    builder.setView(inflater.inflate(R.layout.about_dialog, null))
+	           .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+	               @Override
+	               public void onClick(DialogInterface dialog, int id) {
+	                   dialog.dismiss();
+	               }
+	           })
+	           ;      
+	    AlertDialog dialog = builder.create();
+	    dialog.show();
+		
 	}
 
 	@Override
@@ -323,31 +347,31 @@ public class MainActivity extends Activity implements OnGeneratorStartListener {
 				(CheckBox) findViewById(R.id.checkBox_inbox),
 				(EditText) findViewById(R.id.editText_inbox),
 				(ImageView) findViewById(R.id.imageView_setting_inbox),
-				GeneratorUtils.TagIndex.INBOX);
+				GeneratorUtils.FolderIndex.INBOX);
 
 		MessageBox messageBoxSent = new MessageBox(this,
 				(CheckBox) findViewById(R.id.checkBox_sent),
 				(EditText) findViewById(R.id.editText_sent),
 				(ImageView) findViewById(R.id.imageView_setting_sent),
-				GeneratorUtils.TagIndex.SENT);
+				GeneratorUtils.FolderIndex.SENT);
 
 		MessageBox messageBoxDraft = new MessageBox(this,
 				(CheckBox) findViewById(R.id.checkBox_draft),
 				(EditText) findViewById(R.id.editText_draft),
 				(ImageView) findViewById(R.id.imageView_setting_draft),
-				GeneratorUtils.TagIndex.DRAFT);
+				GeneratorUtils.FolderIndex.DRAFT);
 
 		MessageBox messageBoxOutbox = new MessageBox(this,
 				(CheckBox) findViewById(R.id.checkBox_outbox),
 				(EditText) findViewById(R.id.editText_outbox),
 				(ImageView) findViewById(R.id.imageView_setting_outbox),
-				GeneratorUtils.TagIndex.OUTBOX);
+				GeneratorUtils.FolderIndex.OUTBOX);
 
 		MessageBox messageBoxFailed = new MessageBox(this,
 				(CheckBox) findViewById(R.id.checkBox_failed),
 				(EditText) findViewById(R.id.editText_failed),
 				(ImageView) findViewById(R.id.imageView_setting_failed),
-				GeneratorUtils.TagIndex.FAILED);
+				GeneratorUtils.FolderIndex.FAILED);
 
 		mMessageBoxList = new MessageBoxList(this);
 		mMessageBoxList.add(messageBoxInbox);

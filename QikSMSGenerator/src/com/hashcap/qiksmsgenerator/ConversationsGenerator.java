@@ -1,11 +1,12 @@
 /*
  * Copyright (C) 2012-2013 Hashcap Pvt. Ltd.
  */
-package com.hashcap.qiksmsgenerator.support;
+package com.hashcap.qiksmsgenerator;
+
+import com.hashcap.qiksmsgenerator.GeneratorUtils.FolderName;
 
 import android.content.Context;
 
-import com.hashcap.qiksmsgenerator.GeneratorUtils.TagName;
 
 public class ConversationsGenerator extends Generator {
 	private int mConversations;
@@ -28,7 +29,7 @@ public class ConversationsGenerator extends Generator {
 
 	@Override
 	public String toString() {
-		return "Generator = " + TagName.getName(mType) + "mConversations = "
+		return "Generator = " + FolderName.getName(mType) + "mConversations = "
 				+ mConversations + "mMessages =  "
 				+ super.getDataSettings().getMessages() + "mUri = " + getUri();
 	}

@@ -6,7 +6,6 @@ package com.hashcap.qiksmsgenerator;
 
 import java.util.ArrayList;
 
-import com.hashcap.qiksmsgenerator.support.Generator;
 import com.hashcap.qiksmsgenerator.support.OnGeneratorStartListener;
 
 import android.content.Context;

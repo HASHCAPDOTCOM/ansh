@@ -1,9 +1,10 @@
 /*
  * Copyright (C) 2012-2013 Hashcap Pvt. Ltd.
  */
-package com.hashcap.qiksmsgenerator.support;
+package com.hashcap.qiksmsgenerator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -15,10 +16,10 @@ import android.provider.Telephony.Threads;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.hashcap.qiksmsgenerator.DataSettings;
-import com.hashcap.qiksmsgenerator.GeneratorUtils.TagIndex;
-import com.hashcap.qiksmsgenerator.GeneratorUtils.TagName;
-import com.hashcap.qiksmsgenerator.MessageData;
+import com.hashcap.qiksmsgenerator.GeneratorUtils.FolderIndex;
+import com.hashcap.qiksmsgenerator.GeneratorUtils.FolderName;
+import com.hashcap.qiksmsgenerator.support.OnGeneratorStartListener;
+import com.hashcap.qiksmsgenerator.support.OnGeneratorStatusChangedListener;
 
 public class Generator {
 	private static String TAG = "Generator";
@@ -83,7 +84,7 @@ public class Generator {
 
 	@Override
 	public String toString() {
-		return " mType = " + mType + "[" + TagName.getName(mType) + "]"
+		return " mType = " + mType + "[" + FolderName.getName(mType) + "]"
 				+ " ,  mDataSettings =  " + getDataSettings();
 	}
 
@@ -99,10 +100,16 @@ public class Generator {
 	}
 
 	private String getBody() {
-		int index = RANDOM.nextInt(6);
 
 		MessageData data = MessageData.getInstance(getContext());
 		DataSettings dataSettings = getDataSettings();
+
+		String body = dataSettings.getBody();
+		if (!TextUtils.isEmpty(body)) {
+			return body;
+		}
+
+		int index = RANDOM.nextInt(6);
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i <= index; i++) {
 			if (dataSettings.isText()) {
@@ -127,24 +134,34 @@ public class Generator {
 	public List<String> getAddress() {
 		List<String> list = new ArrayList<String>();
 		int index = RANDOM.nextInt(10);
+		String[] recipients = mDataSettings.getRecipients();
 		MessageData data = MessageData.getInstance(getContext());
-		if (mType == TagIndex.INBOX) {
-			Long address = Long.parseLong(data.getRecipient(index))
-					+ mGenerated;
-			list.add(Long.toString(address));
-		} else {
-			if (getDataSettings().isSingleRecipient()) {
+		if (mType == FolderIndex.INBOX) {
+			if (recipients.length > 0) {
+				list.add(recipients[0]);
+			} else {
 				Long address = Long.parseLong(data.getRecipient(index))
 						+ mGenerated;
 				list.add(Long.toString(address));
+			}
+
+		} else {
+			if (recipients.length > 0) {
+				list.addAll(Arrays.asList(recipients));
 			} else {
-				if (index < 2) {
-					index = 2;
-				}
-				for (int i = 0; i < index; i++) {
-					Long address = Long.parseLong(data.getRecipient(i))
+				if (getDataSettings().isSingleRecipient()) {
+					Long address = Long.parseLong(data.getRecipient(index))
 							+ mGenerated;
 					list.add(Long.toString(address));
+				} else {
+					if (index < 2) {
+						index = 2;
+					}
+					for (int i = 0; i < index; i++) {
+						Long address = Long.parseLong(data.getRecipient(i))
+								+ mGenerated;
+						list.add(Long.toString(address));
+					}
 				}
 			}
 		}

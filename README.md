@@ -6,7 +6,7 @@ Ansh is the project internal name. It is a SMS generator tool named as 'QikSMS G
 QikSMSGenerator 
 ----------------
 
-QikSMS Genertor is the first SMS generator tool which generates predefined random SMS messages for Conversation, Inbox, Sent Box, Draft, Outbox, Faild Box. It is an usefull tool for Android Messaging Application Developers and Testers. It has indivisual settings for all category message contents which saves in preference to get back its old state. It can push multiple language (English, Chinese, Thai, Japanese, Spanish) texts as message body and generates multi-part messages randomly. Different types of messages like Empty message, Single Recipient Message, Multiple Recipient Message, Text Message and Smiley, Phone Number, Web Address, E-mail Address can be pushed as message body to any Messaging applications, for example Native Messaging app.
+QikSMS Generator is the first SMS generator tool which generates predefined random SMS messages for Conversation, Inbox, Sent Box, Draft, Outbox, Faild Box. It is an usefull tool for Android Messaging Application Developers and Testers. It has indivisual settings for all category message contents which saves in preference to get back its old state. It can push multiple language (English, Chinese, Thai, Japanese, Spanish) texts as message body and generates multi-part messages randomly. Different types of messages like Empty message, Single Recipient Message, Multiple Recipient Message, Text Message and Smiley, Phone Number, Web Address, E-mail Address can be pushed as message body to any Messaging applications, for example Native Messaging app.
  
 Features:
 ------------

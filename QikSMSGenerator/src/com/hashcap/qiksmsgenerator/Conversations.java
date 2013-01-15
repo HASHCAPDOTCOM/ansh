@@ -19,10 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.hashcap.qiksmsgenerator.GeneratorUtils.TagIndex;
-import com.hashcap.qiksmsgenerator.GeneratorUtils.TagName;
-import com.hashcap.qiksmsgenerator.support.ConversationsGenerator;
-import com.hashcap.qiksmsgenerator.support.Generator;
+import com.hashcap.qiksmsgenerator.GeneratorUtils.FolderIndex;
+import com.hashcap.qiksmsgenerator.GeneratorUtils.FolderName;
 import com.hashcap.qiksmsgenerator.support.InputFilterMinMax;
 import com.hashcap.qiksmsgenerator.support.OnGeneratorStatusChangedListener;
 import com.hashcap.qiksmsgenerator.ui.DataSettingsActivity;
@@ -30,7 +28,7 @@ import com.hashcap.qiksmsgenerator.ui.MainActivity;
 
 public class Conversations {
 	private static final String TAG = "Conversations";
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 	private Context mContext;
 	private boolean mEnabled;
 	private EditText mEditTextConversations;
@@ -42,7 +40,7 @@ public class Conversations {
 	public Conversations(Context context, EditText converstions,
 			EditText messages, ImageView settings) {
 		mContext = context;
-		mTag = TagIndex.CONVERSATION;
+		mTag = FolderIndex.CONVERSATION;
 		mEditTextConversations = converstions;
 		mEditTextMessages = messages;
 
@@ -150,7 +148,7 @@ public class Conversations {
 		});
 		mImageViewSettings = settings;
 		mDataSettings = new ConversationsDataSettings(mContext,
-				TagName.getName(mTag));
+				FolderName.getName(mTag));
 
 		mEditTextMessages
 				.setText(mDataSettings.getMessages() > 0 ? mDataSettings
@@ -209,7 +207,7 @@ public class Conversations {
 	}
 
 	private void save() {
-		mDataSettings.save(mContext, TagName.getName(mTag));
+		mDataSettings.save(mContext, FolderName.getName(mTag));
 	}
 
 	public void setSettingsData(DataSettings dataSettings) {
@@ -218,7 +216,7 @@ public class Conversations {
 
 	public Generator getGenerator() {
 		ConversationsGenerator generator = new ConversationsGenerator(mContext,
-				TagIndex.CONVERSATION);
+				FolderIndex.CONVERSATION);
 		generator.setDataSettings(mDataSettings);
 
 		return generator;

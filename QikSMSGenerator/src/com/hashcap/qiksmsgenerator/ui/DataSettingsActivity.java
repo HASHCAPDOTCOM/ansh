@@ -6,7 +6,7 @@ package com.hashcap.qiksmsgenerator.ui;
 
 import com.hashcap.qiksmsgenerator.DataSettings;
 import com.hashcap.qiksmsgenerator.R;
-import com.hashcap.qiksmsgenerator.GeneratorUtils.TagIndex;
+import com.hashcap.qiksmsgenerator.GeneratorUtils.FolderIndex;
 import com.hashcap.qiksmsgenerator.R.id;
 import com.hashcap.qiksmsgenerator.R.layout;
 
@@ -72,7 +72,7 @@ public class DataSettingsActivity extends Activity {
 		if (dataSettings == null) {
 			return;
 		}
-		if (mTag == TagIndex.INBOX || mTag == TagIndex.CONVERSATION) {
+		if (mTag == FolderIndex.INBOX || mTag == FolderIndex.CONVERSATION) {
 			mCheckBoxSingleRecipient.setChecked(true);
 			mCheckBoxMultipleRecipients.setChecked(false);
 			mCheckBoxMultipleRecipients.setEnabled(false);

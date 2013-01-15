@@ -15,16 +15,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.hashcap.qiksmsgenerator.GeneratorUtils.TagIndex;
-import com.hashcap.qiksmsgenerator.support.ConversationsGenerator;
-import com.hashcap.qiksmsgenerator.support.Generator;
+import com.hashcap.qiksmsgenerator.GeneratorUtils.FolderIndex;
 import com.hashcap.qiksmsgenerator.support.MaxGeneratorException;
 import com.hashcap.qiksmsgenerator.support.OnGeneratorProgressUpdateListener;
 import com.hashcap.qiksmsgenerator.support.OnGeneratorStatusChangedListener;
 
 public class GeneratorServeice extends Service {
 	private static final String TAG = "GeneratorServeice";
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 	ArrayBlockingQueue<Generator> mGenerators = new ArrayBlockingQueue<Generator>(
 			Generator.MAX_GENERATOR);
 	private Generator mGenerator;
@@ -192,7 +190,7 @@ public class GeneratorServeice extends Service {
 					Generator generator = params[0];
 
 					if (generator != null) {
-						if (generator.getType() == TagIndex.CONVERSATION) {
+						if (generator.getType() == FolderIndex.CONVERSATION) {
 							if (generator instanceof ConversationsGenerator) {
 								ConversationsGenerator conversationsGenerator = (ConversationsGenerator) generator;
 								int conversations = ((ConversationsDataSettings) conversationsGenerator
